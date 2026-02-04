@@ -1,3 +1,6 @@
+import 'package:btih_andriod_app/screens/dashboard_screen.dart';
+import 'package:btih_andriod_app/screens/home_screen.dart';
+import 'package:btih_andriod_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentsScreen extends StatefulWidget {
@@ -32,12 +35,15 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   @override
   void initState() {
     super.initState();
-    _hourController =
-        FixedExtentScrollController(initialItem: _selectedHourIndex);
-    _minuteController =
-        FixedExtentScrollController(initialItem: _selectedMinuteIndex);
-    _periodController =
-        FixedExtentScrollController(initialItem: _selectedPeriodIndex);
+    _hourController = FixedExtentScrollController(
+      initialItem: _selectedHourIndex,
+    );
+    _minuteController = FixedExtentScrollController(
+      initialItem: _selectedMinuteIndex,
+    );
+    _periodController = FixedExtentScrollController(
+      initialItem: _selectedPeriodIndex,
+    );
     // initialize displayed time and calendar
     _updateSelectedTime();
     _selectedDate = DateTime.now();
@@ -72,21 +78,28 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       child: CircleAvatar(
                         radius: 38,
                         backgroundColor: Colors.grey.shade200,
-                        child: const Icon(Icons.person,
-                            size: 44, color: Colors.grey),
+                        child: const Icon(
+                          Icons.person,
+                          size: 44,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     const Text(
                       'Dr. Ali Khan',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Cardiologist',
-                      style:
-                          TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                      ),
                     ),
                   ],
                 ),
@@ -119,7 +132,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       Text(
                         'Select day',
                         style: TextStyle(
-                            fontSize: 13, color: Colors.grey.shade700),
+                          fontSize: 13,
+                          color: Colors.grey.shade700,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Container(
@@ -139,30 +154,35 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                   onPressed: () {
                                     setState(() {
                                       _focusedMonth = DateTime(
-                                          _focusedMonth.year,
-                                          _focusedMonth.month - 1,
-                                          1);
+                                        _focusedMonth.year,
+                                        _focusedMonth.month - 1,
+                                        1,
+                                      );
                                       // show week containing first of month
-                                      _displayWeekStart =
-                                          _startOfWeek(_focusedMonth);
+                                      _displayWeekStart = _startOfWeek(
+                                        _focusedMonth,
+                                      );
                                     });
                                   },
                                 ),
                                 Text(
                                   _formatMonthYear(_focusedMonth),
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.chevron_right),
                                   onPressed: () {
                                     setState(() {
                                       _focusedMonth = DateTime(
-                                          _focusedMonth.year,
-                                          _focusedMonth.month + 1,
-                                          1);
-                                      _displayWeekStart =
-                                          _startOfWeek(_focusedMonth);
+                                        _focusedMonth.year,
+                                        _focusedMonth.month + 1,
+                                        1,
+                                      );
+                                      _displayWeekStart = _startOfWeek(
+                                        _focusedMonth,
+                                      );
                                     });
                                   },
                                 ),
@@ -171,25 +191,32 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: List.generate(7, (i) {
-                                final date =
-                                    _displayWeekStart.add(Duration(days: i));
+                                final date = _displayWeekStart.add(
+                                  Duration(days: i),
+                                );
                                 final dayNum = date.day;
-                                final isSelected =
-                                    _isSameDay(date, _selectedDate);
+                                final isSelected = _isSameDay(
+                                  date,
+                                  _selectedDate,
+                                );
                                 return Column(
                                   children: [
                                     Text(
                                       ['M', 'T', 'W', 'T', 'F', 'S', 'S'][i],
                                       style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade600),
+                                        fontSize: 12,
+                                        color: Colors.grey.shade600,
+                                      ),
                                     ),
                                     const SizedBox(height: 6),
                                     GestureDetector(
                                       onTap: () => setState(() {
                                         _selectedDate = date;
-                                        _focusedMonth =
-                                            DateTime(date.year, date.month, 1);
+                                        _focusedMonth = DateTime(
+                                          date.year,
+                                          date.month,
+                                          1,
+                                        );
                                       }),
                                       child: Container(
                                         width: 32,
@@ -208,7 +235,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                                         .withOpacity(0.03),
                                                     blurRadius: 6,
                                                     offset: const Offset(0, 3),
-                                                  )
+                                                  ),
                                                 ],
                                         ),
                                         child: Text(
@@ -235,7 +262,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       Text(
                         'Select time',
                         style: TextStyle(
-                            fontSize: 16, color: Colors.grey.shade700),
+                          fontSize: 16,
+                          color: Colors.grey.shade700,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       // Time selector (wheel pickers for hour, minute and AM/PM)
@@ -247,7 +276,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                             Text(
                               selectedTime,
                               style: const TextStyle(
-                                  fontSize: 26, fontWeight: FontWeight.w600),
+                                fontSize: 26,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             const SizedBox(height: 8),
                             Row(
@@ -269,17 +300,20 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                     },
                                     childDelegate:
                                         ListWheelChildBuilderDelegate(
-                                      builder: (context, index) {
-                                        final hour =
-                                            _hours[index % _hours.length];
-                                        return Center(
-                                            child: Text(
-                                          hour.toString(),
-                                          style: const TextStyle(fontSize: 20),
-                                        ));
-                                      },
-                                      childCount: _hours.length,
-                                    ),
+                                          builder: (context, index) {
+                                            final hour =
+                                                _hours[index % _hours.length];
+                                            return Center(
+                                              child: Text(
+                                                hour.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          childCount: _hours.length,
+                                        ),
                                   ),
                                 ),
                                 const SizedBox(width: 8),
@@ -299,17 +333,21 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                     },
                                     childDelegate:
                                         ListWheelChildBuilderDelegate(
-                                      builder: (context, index) {
-                                        final min =
-                                            _minutes[index % _minutes.length];
-                                        return Center(
-                                            child: Text(
-                                          min,
-                                          style: const TextStyle(fontSize: 18),
-                                        ));
-                                      },
-                                      childCount: _minutes.length,
-                                    ),
+                                          builder: (context, index) {
+                                            final min =
+                                                _minutes[index %
+                                                    _minutes.length];
+                                            return Center(
+                                              child: Text(
+                                                min,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          childCount: _minutes.length,
+                                        ),
                                   ),
                                 ),
                                 const SizedBox(width: 8),
@@ -329,17 +367,21 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                     },
                                     childDelegate:
                                         ListWheelChildBuilderDelegate(
-                                      builder: (context, index) {
-                                        final p =
-                                            _periods[index % _periods.length];
-                                        return Center(
-                                            child: Text(
-                                          p,
-                                          style: const TextStyle(fontSize: 18),
-                                        ));
-                                      },
-                                      childCount: _periods.length,
-                                    ),
+                                          builder: (context, index) {
+                                            final p =
+                                                _periods[index %
+                                                    _periods.length];
+                                            return Center(
+                                              child: Text(
+                                                p,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          childCount: _periods.length,
+                                        ),
                                   ),
                                 ),
                               ],
@@ -355,7 +397,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF1FC9C0),
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 14),
+                                      vertical: 14,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(14),
                                     ),
@@ -363,7 +406,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                   child: const Text(
                                     'Book now',
                                     style: TextStyle(
-                                        fontSize: 16, color: Colors.white),
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -395,10 +440,26 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
               });
               if (index == 0) {
                 // Home
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
               } else if (index == 1) {
                 // Dashboard (current)
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DashboardScreen(),
+                  ),
+                );
               } else if (index == 2) {
                 // Profile
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileScreen(),
+                  ),
+                );
               }
             },
             items: const [
@@ -436,8 +497,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         child: Text(
           label,
           style: TextStyle(
-              color: active ? Colors.white : Colors.grey.shade800,
-              fontWeight: FontWeight.w600),
+            color: active ? Colors.white : Colors.grey.shade800,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
@@ -471,7 +533,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       'September',
       'October',
       'November',
-      'December'
+      'December',
     ];
     return '${months[date.month - 1]} ${date.year}';
   }

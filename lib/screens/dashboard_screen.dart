@@ -1,3 +1,5 @@
+import 'package:btih_andriod_app/screens/home_screen.dart';
+import 'package:btih_andriod_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:btih_andriod_app/screens/appointments_screen.dart';
 
@@ -158,16 +160,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.grey,
             type: BottomNavigationBarType.fixed,
-            onTap: (index) {
+             onTap: (index) {
               setState(() {
                 _currentIndex = index;
               });
               if (index == 0) {
                 // Home
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
               } else if (index == 1) {
                 // Dashboard (current)
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DashboardScreen(),
+                  ),
+                );
               } else if (index == 2) {
                 // Profile
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileScreen(),
+                  ),
+                );
               }
             },
             items: const [
