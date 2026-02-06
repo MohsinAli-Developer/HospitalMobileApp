@@ -30,16 +30,16 @@ class SplashScreen extends StatelessWidget {
     );
   }
 
-  Widget _dot(bool active) {
-    return Container(
-      width: 10,
-      height: 10,
-      decoration: BoxDecoration(
-        color: active ? const Color(0xFF1FC9C0) : Colors.grey.shade300,
-        shape: BoxShape.circle,
-      ),
-    );
-  }
+  // Widget _dot(bool active) {
+  //   return Container(
+  //     width: 10,
+  //     height: 10,
+  //     decoration: BoxDecoration(
+  //       color: active ? const Color(0xFF1FC9C0) : Colors.grey.shade300,
+  //       shape: BoxShape.circle,
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +82,16 @@ class SplashScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _dot(false),
-                    const SizedBox(width: 8),
-                    _dot(true),
-                    const SizedBox(width: 8),
-                    _dot(false),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     _dot(false),
+                //     const SizedBox(width: 8),
+                //     _dot(true),
+                //     const SizedBox(width: 8),
+                //     _dot(false),
+                //   ],
+                // ),
               ],
             ),
           ),

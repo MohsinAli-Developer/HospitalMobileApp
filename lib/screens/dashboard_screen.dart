@@ -1,5 +1,7 @@
+import 'package:btih_andriod_app/models/doctors_model.dart';
 import 'package:btih_andriod_app/screens/home_screen.dart';
 import 'package:btih_andriod_app/screens/profile_screen.dart';
+import 'package:btih_andriod_app/services/doctors_service.dart';
 import 'package:flutter/material.dart';
 import 'package:btih_andriod_app/screens/appointments_screen.dart';
 
@@ -12,6 +14,23 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 1; // Dashboard selected
+
+  final DoctorService _doctorService = DoctorService();
+  List<Doctor> doctors = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadDoctors();
+  }
+
+  void loadDoctors() async {
+    doctors = await _doctorService.getDoctors();
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,15 +98,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     childAspectRatio: 3.4,
                     children: [
                       _quickTile(Icons.folder, 'View Records'),
-                      _quickTile(Icons.calendar_today, 'Appointments',
-                          onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const AppointmentsScreen(),
-                          ),
-                        );
-                      }),
+                      _quickTile(
+                        Icons.calendar_today,
+                        'Appointments',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const AppointmentsScreen(),
+                            ),
+                          );
+                        },
+                      ),
                       _quickTile(Icons.medication, 'Medications'),
                       _quickTile(Icons.message, 'Messages'),
                     ],
@@ -99,10 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   'Categories',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ),
               const SizedBox(height: 12),
@@ -127,18 +146,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.only(left: 20),
-                  children: const [
-                    DoctorCardHorizontal(
+                  children: [
+                    //                   isLoading
+                    // ? const Center(child: CircularProgressIndicator())
+                    // : ListView.builder(
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemCount: doctors.length,
+                    //     itemBuilder: (context, index) {
+                    //       final doctor = doctors[index];
+                    //       return Padding(
+                    //         padding: const EdgeInsets.only(right: 14),
+                    //         child: DoctorCardHorizontal(
+                    //           name: doctor.name,
+                    //           specialty: doctor.specialty,
+                    //         ),
+                    //       );
+                    //     },
+                    //   )
+                    const DoctorCardHorizontal(
                       name: 'Dr. Sarah Ahmed',
                       specialty: 'Psychologist',
                     ),
-                    SizedBox(width: 14),
-                    DoctorCardHorizontal(
+                    const SizedBox(width: 14),
+                    const DoctorCardHorizontal(
                       name: 'Dr. Ali Khan',
                       specialty: 'Cardiologist',
                     ),
-                    SizedBox(width: 14),
-                    DoctorCardHorizontal(
+                    const SizedBox(width: 14),
+                    const DoctorCardHorizontal(
                       name: 'Dr. Maria Siddiqui',
                       specialty: 'Dermatologist',
                     ),
@@ -160,7 +195,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.grey,
             type: BottomNavigationBarType.fixed,
-             onTap: (index) {
+            onTap: (index) {
               setState(() {
                 _currentIndex = index;
               });
@@ -183,7 +218,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(),
+                    builder: (context) => const ProfileScreen(mrNo: '',),
                   ),
                 );
               }
@@ -239,11 +274,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
-                icon,
-                color: const Color(0xFF1FC9C0),
-                size: 26,
-              ),
+              child: Icon(icon, color: const Color(0xFF1FC9C0), size: 26),
             ),
             const SizedBox(width: 12),
             Expanded(

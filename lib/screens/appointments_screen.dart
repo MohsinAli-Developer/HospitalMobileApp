@@ -1,6 +1,7 @@
 import 'package:btih_andriod_app/screens/dashboard_screen.dart';
 import 'package:btih_andriod_app/screens/home_screen.dart';
 import 'package:btih_andriod_app/screens/profile_screen.dart';
+import 'package:btih_andriod_app/services/apointment_service.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentsScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   late DateTime _focusedMonth; // month being shown in header
   late DateTime _displayWeekStart; // Monday of the displayed week
   late DateTime _selectedDate; // currently selected date
-  String selectedTime = '8:00 AM';
+  String selectedTime = '1:00 AM';
 
   // Time picker state
   late FixedExtentScrollController _hourController;
@@ -28,9 +29,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   final List<String> _minutes = ['00', '30'];
   final List<String> _periods = ['AM', 'PM'];
 
-  int _selectedHourIndex = 7; // corresponds to 8 by default (index 7 -> 8)
+  int _selectedHourIndex = 0; // default to 1:00 AM
   int _selectedMinuteIndex = 0;
   int _selectedPeriodIndex = 0;
+
+  late Appointment appointment;
 
   @override
   void initState() {
@@ -231,8 +234,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                               ? []
                                               : [
                                                   BoxShadow(
-                                                    color: Colors.black
-                                                        .withOpacity(0.03),
+                                                    color: Colors.black,
                                                     blurRadius: 6,
                                                     offset: const Offset(0, 3),
                                                   ),
@@ -393,6 +395,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     // TODO: implement booking action
+                                    final appointment = Appointment(
+                                      doctorId: 'doc_123',
+                                      date: _selectedDate,
+                                      time: selectedTime,
+                                      userId: 'user_456',
+                                    );
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF1FC9C0),
@@ -457,7 +465,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(),
+                    builder: (context) => const ProfileScreen(mrNo: '',),
                   ),
                 );
               }
