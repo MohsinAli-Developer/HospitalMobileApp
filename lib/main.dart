@@ -1,4 +1,4 @@
-import 'package:btih_andriod_app/screens/bill_category_screen.dart';
+// import 'package:btih_andriod_app/screens/bill_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:btih_andriod_app/screens/splash_screen.dart';
 
@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        //'/': (context) => const BillCategoryScreen(),
-        '/': (context) => const SplashScreen(),
+       // '/': (context) => const BillCategoryScreen(),
+       '/': (context) => const SplashScreen(),
       },
     );
   }

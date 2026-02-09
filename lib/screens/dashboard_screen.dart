@@ -1,6 +1,7 @@
 import 'package:btih_andriod_app/models/doctors_model.dart';
+import 'package:btih_andriod_app/screens/bill_category_screen.dart';
 import 'package:btih_andriod_app/screens/home_screen.dart';
-import 'package:btih_andriod_app/screens/profile_screen.dart';
+// import 'package:btih_andriod_app/screens/profile_screen.dart';
 import 'package:btih_andriod_app/services/doctors_service.dart';
 import 'package:flutter/material.dart';
 import 'package:btih_andriod_app/screens/appointments_screen.dart';
@@ -89,15 +90,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
-                  height: 180,
+                  height: 120,
                   child: GridView.count(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
                     physics: const NeverScrollableScrollPhysics(),
                     childAspectRatio: 3.4,
                     children: [
-                      _quickTile(Icons.folder, 'View Records'),
+                      _quickTile(Icons.folder, 'Records'),
                       _quickTile(
                         Icons.calendar_today,
                         'Appointments',
@@ -116,7 +117,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
@@ -218,7 +218,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(mrNo: '',),
+                    builder: (context) => const BillCategoryScreen(),
                   ),
                 );
               }
@@ -260,7 +260,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
           color: const Color(0xFFF3F4F6),
           borderRadius: BorderRadius.circular(12),
@@ -269,18 +269,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             Container(
               width: 44,
-              height: 44,
+              height: 64,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: const Color(0xFF1FC9C0), size: 26),
+              child: Icon(icon, color: const Color(0xFF1FC9C0), size: 24),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
               ),
             ),
           ],

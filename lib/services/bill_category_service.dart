@@ -5,7 +5,10 @@ import 'package:http/io_client.dart';
 
 class BillCategoryService {
   static const String baseUrl =
-      "https://10.0.2.2:7107/api/BillData";
+      //"http://localhost:7107/api/BillData";
+      //"https://10.0.2.2:7107/api/BillData";
+      "https://172.16.40.56:80/api/BillData";
+      
 
   Future<List<BillCategory>> getBillCategories() async {
 

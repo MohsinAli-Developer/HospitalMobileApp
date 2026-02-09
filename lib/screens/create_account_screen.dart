@@ -56,6 +56,26 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
     }
   }
 
+//   Future<void> _submit() async {
+//   if (!_formKey.currentState!.validate()) return;
+//   setState(() => _loading = true);
+//   final ok = await _auth.signUp(
+//     email: _emailController.text.trim(),
+//     password: _passwordController.text,
+//   );
+//   setState(() => _loading = false);
+
+//   if (ok) {
+//     _showSnack('Account created');
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (_) => const LoginScreen()),
+//     );
+//   } else {
+//     _showSnack('Failed to create account');
+//   }
+// }
+
   Future<void> _socialSign(Future<bool> Function() fn, String provider) async {
     setState(() => _loading = true);
     final ok = await fn();
@@ -115,7 +135,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                       TextFormField(
                         controller: _emailController,
                         decoration: InputDecoration(
-                          labelText: 'Email or Username',
+                          labelText: 'Email or Phone number',
                           filled: true,
                           fillColor: Colors.grey[100],
                           prefixIcon: const Icon(Icons.person),
@@ -170,7 +190,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                               ),
                             ),
                             TextSpan(
-                              text: ' button, you agree to the public offer.',
+                              text: 'button, you agree to the public offer.',
                             ),
                           ],
                         ),

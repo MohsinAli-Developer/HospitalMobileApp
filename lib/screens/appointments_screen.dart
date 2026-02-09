@@ -1,6 +1,7 @@
+import 'package:btih_andriod_app/screens/bill_category_screen.dart';
 import 'package:btih_andriod_app/screens/dashboard_screen.dart';
 import 'package:btih_andriod_app/screens/home_screen.dart';
-import 'package:btih_andriod_app/screens/profile_screen.dart';
+// import 'package:btih_andriod_app/screens/profile_screen.dart';
 import 'package:btih_andriod_app/services/apointment_service.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +69,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(top: 100),
+          padding: const EdgeInsets.only(top: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -271,7 +272,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       const SizedBox(height: 8),
                       // Time selector (wheel pickers for hour, minute and AM/PM)
                       Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Column(
                           children: [
                             // display the selected time above picker
@@ -282,7 +283,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -321,7 +321,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                 const SizedBox(width: 8),
                                 SizedBox(
                                   width: 60,
-                                  height: 120,
+                                  height: 100,
                                   child: ListWheelScrollView.useDelegate(
                                     controller: _minuteController,
                                     itemExtent: 36,
@@ -395,12 +395,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     // TODO: implement booking action
-                                    final appointment = Appointment(
-                                      doctorId: 'doc_123',
-                                      date: _selectedDate,
-                                      time: selectedTime,
-                                      userId: 'user_456',
-                                    );
+                                    // final appointment = Appointment(
+                                    //   doctorId: 'doc_123',
+                                    //   date: _selectedDate,
+                                    //   time: selectedTime,
+                                    //   userId: 'user_456',
+                                    // );
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF1FC9C0),
@@ -465,7 +465,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(mrNo: '',),
+                    builder: (context) => const BillCategoryScreen(),
                   ),
                 );
               }

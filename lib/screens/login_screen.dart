@@ -31,23 +31,35 @@ class _LoginScreenState extends State<LoginScreen> {
     ));
   }
 
-  // Future<void> _login() async {
-  //   setState(() => _loading = true);
-  //   final saved = await _auth.getSavedAccount();
-  //   setState(() => _loading = false);
-  //   if (saved == null) {
-  //     _showSnack('No account found. Please register.');
-  //     return;
-  //   }
-  //   final inputEmail = _emailController.text.trim();
-  //   final inputPwd = _passwordController.text;
-  //   if (inputEmail == saved['email'] && inputPwd == saved['password']) {
-  //     _showSnack('Login successful');
-  //     // Navigate to dashboard or home screen here
-  //   } else {
-  //     _showSnack('Invalid username or password');
-  //   }
-  // }
+// Future<void> _login() async {
+//   setState(() => _loading = true);
+//   String? identifier = _emailController.text.trim();
+//   if (identifier.isEmpty) {
+//     identifier = _phoneNumberController.text.trim();
+//   }
+//   final mrNo = await _auth.signIn(
+//     email: identifier.contains('@') ? identifier : null,
+//     phoneNumber: identifier.contains('@') ? null : identifier,
+//     password: _passwordController.text,
+//   );
+//   setState(() => _loading = false);
+
+//   if (mrNo != null) {
+//     // store the mrNo securely
+//     final user = await _auth.getUser(mrNo);
+//     if (user != null) {
+//       // navigate to dashboard with user data
+//       Navigator.pushReplacement(
+//         context,
+//         MaterialPageRoute(builder: (_) => DashboardScreen(user: user)),
+//       );
+//     } else {
+//       _showSnack('Failed to fetch user data');
+//     }
+//   } else {
+//     _showSnack('Invalid credentials');
+//   }
+// }
 
   Future<void> _login() async {
   setState(() => _loading = true);
