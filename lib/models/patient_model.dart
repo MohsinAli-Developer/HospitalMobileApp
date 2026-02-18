@@ -1,32 +1,85 @@
+// lib/models/patient_model.dart
 
-class Patient {
-  final String mrNo;
-  final String name;
+class PatientVisit {
+  final int serialNumber;
+  final String firstName;
+  final String lastName;
   final String gender;
-  final String contactNumber;
-  final String dob;
+  final String visitDate;
+  final String dateOfBirth;
   final String cnic;
-  final String address;
+  final String contactNo;
+  final String bloodGroup;
 
-  Patient({
-    required this.mrNo,
-    required this.name,
+  PatientVisit({
+    required this.serialNumber,
+    required this.firstName,
+    required this.lastName,
     required this.gender,
-    required this.contactNumber,
-    required this.dob,
+    required this.visitDate,
+    required this.dateOfBirth,
     required this.cnic,
-    required this.address,
+    required this.contactNo,
+    required this.bloodGroup,
   });
 
-  factory Patient.fromJson(Map<String, dynamic> json) {
-    return Patient(
-      mrNo: json['mrNo'],
-      name: json['name'],
-      gender: json['gender'],
-      contactNumber: json['contactNumber'],
-      dob: json['dob'],
-      cnic: json['cnic'],
-      address: json['address'],
+  factory PatientVisit.fromJson(Map<String, dynamic> json) {
+    return PatientVisit(
+      serialNumber: json['serialNumber'] ?? 0,
+      firstName: json['firstName'] ?? '',
+      lastName: json['lastName'] ?? '',
+      gender: json['gender'] ?? '',
+      visitDate: json['visitDate'] ?? '',
+      dateOfBirth: json['dateOfBirth'] ?? '',
+      cnic: json['cnic'] ?? '',
+      contactNo: json['contactNo'] ?? '',
+      bloodGroup: json['bloodGroup'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'serialNumber': serialNumber,
+      'firstName': firstName,
+      'lastName': lastName,
+      'gender': gender,
+      'visitDate': visitDate,
+      'dateOfBirth': dateOfBirth,
+      'cnic': cnic,
+      'contactNo': contactNo,
+      'bloodGroup': bloodGroup,
+    };
+  }
+}
+
+class PatientInfo {
+  final String firstName;
+  final String lastName;
+  final String gender;
+  final String dateOfBirth;
+  final String cnic;
+  final String contactNo;
+  final String bloodGroup;
+
+  PatientInfo({
+    required this.firstName,
+    required this.lastName,
+    required this.gender,
+    required this.dateOfBirth,
+    required this.cnic,
+    required this.contactNo,
+    required this.bloodGroup,
+  });
+
+  factory PatientInfo.fromPatientVisit(PatientVisit visit) {
+    return PatientInfo(
+      firstName: visit.firstName,
+      lastName: visit.lastName,
+      gender: visit.gender,
+      dateOfBirth: visit.dateOfBirth,
+      cnic: visit.cnic,
+      contactNo: visit.contactNo,
+      bloodGroup: visit.bloodGroup,
     );
   }
 }

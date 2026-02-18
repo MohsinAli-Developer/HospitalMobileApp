@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:btih_andriod_app/screens/create_account_screen.dart';
+import 'package:btih_andriod_app/screens/login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -7,7 +7,7 @@ class SplashScreen extends StatelessWidget {
   void _navigateToCreate(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const CreateAccountScreen()),
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
   }
 
