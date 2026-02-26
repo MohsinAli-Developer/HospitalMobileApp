@@ -65,116 +65,125 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
           : doctors.isEmpty
               ? const Center(child: Text('No doctors available'))
               : GridView.builder(
-                  padding: const EdgeInsets.all(16),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 0.8,
-                  ),
-                  itemCount: doctors.length,
-                  itemBuilder: (context, index) {
-                    final doctor = doctors[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => DoctorScheduleScreen(
-                              doctorId: doctor.id,
-                              doctorName: doctor.doctorName,
+  padding: EdgeInsets.only(
+    left: 16,
+    right: 16,
+    top: 16,
+    bottom: MediaQuery.of(context).padding.bottom + 16,
+  ),
+  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    crossAxisSpacing: 16,
+    mainAxisSpacing: 16,
+    childAspectRatio: 0.68, // Slightly more height
+  ),
+  itemCount: doctors.length,
+  itemBuilder: (context, index) {
+    final doctor = doctors[index];
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => DoctorScheduleScreen(
+              doctorId: doctor.id,
+              doctorName: doctor.doctorName,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF3F4F6),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x11000000),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Image
+            Container(
+              height: 95,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: doctor.doctorImagePath != null &&
+                        doctor.doctorImagePath!.isNotEmpty
+                    ? Image.network(
+                        doctor.doctorImagePath!,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: const Color(0xFF1FC9C0).withOpacity(0.1),
+                            child: const Icon(
+                              Icons.person,
+                              size: 40,
+                              color: Color(0xFF1FC9C0),
                             ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF3F4F6),
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0x11000000),
-                              blurRadius: 8,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: doctor.doctorImagePath != null && 
-                                         doctor.doctorImagePath!.isNotEmpty
-                                      ? Image.network(
-                                          doctor.doctorImagePath!,
-                                          fit: BoxFit.contain,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Container(
-                                              color: const Color(0xFF1FC9C0).withOpacity(0.1),
-                                              child: const Icon(
-                                                Icons.person,
-                                                size: 40,
-                                                color: Color(0xFF1FC9C0),
-                                              ),
-                                            );
-                                          },
-                                        )
-                                      : Container(
-                                          color: const Color(0xFF1FC9C0).withOpacity(0.1),
-                                          child: const Icon(
-                                            Icons.person,
-                                            size: 40,
-                                            color: Color(0xFF1FC9C0),
-                                          ),
-                                        ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    doctor.doctorName,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    doctor.specializationName,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                          );
+                        },
+                      )
+                    : Container(
+                        color:
+                            const Color(0xFF1FC9C0).withOpacity(0.1),
+                        child: const Icon(
+                          Icons.person,
+                          size: 40,
+                          color: Color(0xFF1FC9C0),
                         ),
                       ),
-                    );
-                  },
-                ),
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            // Expanded Text Section (KEY FIX)
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    doctor.doctorName,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    doctor.specializationName,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  },
+),
+
     );
   }
 }

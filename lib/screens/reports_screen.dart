@@ -1,864 +1,11 @@
-// import 'package:flutter/material.dart';
-
-// class ReportsScreen extends StatefulWidget {
-//   final String patientMrNo;
-//   final String patientName;
-
-//   const ReportsScreen({
-//     super.key,
-//     required this.patientMrNo,
-//     required this.patientName,
-//   });
-
-//   @override
-//   State<ReportsScreen> createState() => _ReportsScreenState();
-// }
-
-// class _ReportsScreenState extends State<ReportsScreen> with SingleTickerProviderStateMixin {
-//   late TabController _tabController;
-  
-//   // Sample data for each category
-//   final List<Map<String, dynamic>> laboratoryReports = [
-//     {'name': 'Complete Blood Count', 'date': '2024-01-15', 'status': 'Normal', 'value': '4.5M/µL', 'icon': Icons.science},
-//     {'name': 'Lipid Profile', 'date': '2024-01-10', 'status': 'Abnormal', 'value': '240 mg/dL', 'icon': Icons.opacity},
-//     {'name': 'Liver Function Test', 'date': '2024-01-05', 'status': 'Normal', 'value': '35 U/L', 'icon': Icons.healing},
-//     {'name': 'Thyroid Profile', 'date': '2023-12-28', 'status': 'Normal', 'value': '2.5 µIU/mL', 'icon': Icons.monitor_heart},
-//     {'name': 'Urinalysis', 'date': '2023-12-20', 'status': 'Normal', 'value': 'Clear', 'icon': Icons.water_drop},
-//     {'name': 'Vitamin D Test', 'date': '2023-12-15', 'status': 'Low', 'value': '18 ng/mL', 'icon': Icons.wb_sunny},
-//   ];
-
-//   final List<Map<String, dynamic>> gastroReports = [
-//     {'name': 'Upper Endoscopy', 'date': '2024-01-12', 'status': 'Completed', 'doctor': 'Dr. Smith', 'icon': Icons.healing},
-//     {'name': 'Colonoscopy', 'date': '2023-12-20', 'status': 'Completed', 'doctor': 'Dr. Johnson', 'icon': Icons.medical_services},
-//     {'name': 'H. Pylori Test', 'date': '2024-01-08', 'status': 'Positive', 'value': 'Detected', 'icon': Icons.bug_report},
-//     {'name': 'Stool Analysis', 'date': '2024-01-03', 'status': 'Normal', 'value': 'No abnormalities', 'icon': Icons.biotech},
-//     {'name': 'Abdominal Ultrasound', 'date': '2023-12-18', 'status': 'Completed', 'doctor': 'Dr. Williams', 'icon': Icons.medical_services},
-//     {'name': 'Gastric Biopsy', 'date': '2023-12-10', 'status': 'Benign', 'value': 'Negative', 'icon': Icons.science},
-//   ];
-
-//   final List<Map<String, dynamic>> radiologyReports = [
-//     {'name': 'Chest X-Ray', 'date': '2024-01-14', 'status': 'Normal', 'doctor': 'Dr. Brown', 'icon': Icons.medical_services},
-//     {'name': 'MRI Brain', 'date': '2024-01-07', 'status': 'Abnormal', 'findings': 'Small lesion', 'icon': Icons.monitor_heart},
-//     {'name': 'CT Abdomen', 'date': '2023-12-22', 'status': 'Normal', 'doctor': 'Dr. Davis', 'icon': Icons.view_in_ar},
-//     {'name': 'Bone Density', 'date': '2023-12-15', 'status': 'Osteopenia', 'value': '-1.8 T-score', 'icon': Icons.health_and_safety},
-//     {'name': 'Mammogram', 'date': '2023-12-05', 'status': 'Normal', 'doctor': 'Dr. Miller', 'icon': Icons.health_and_safety},
-//     {'name': 'Ultrasound Abdomen', 'date': '2023-11-28', 'status': 'Normal', 'doctor': 'Dr. Wilson', 'icon': Icons.medical_services},
-//   ];
-
-//   final List<Map<String, dynamic>> prescriptionReports = [
-//     {'name': 'Amoxicillin', 'date': '2024-01-10', 'status': 'Active', 'dosage': '500mg', 'icon': Icons.medication},
-//     {'name': 'Lisinopril', 'date': '2024-01-05', 'status': 'Active', 'dosage': '10mg', 'icon': Icons.medication_liquid},
-//     {'name': 'Metformin', 'date': '2023-12-20', 'status': 'Active', 'dosage': '850mg', 'icon': Icons.medication},
-//     {'name': 'Atorvastatin', 'date': '2023-12-15', 'status': 'Active', 'dosage': '20mg', 'icon': Icons.medication},
-//     {'name': 'Albuterol Inhaler', 'date': '2023-12-10', 'status': 'Active', 'dosage': '90mcg', 'icon': Icons.medical_services},
-//     {'name': 'Omeprazole', 'date': '2023-12-01', 'status': 'Completed', 'dosage': '20mg', 'icon': Icons.medication},
-//   ];
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _tabController = TabController(length: 4, vsync: this);
-//   }
-
-//   @override
-//   void dispose() {
-//     _tabController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         backgroundColor: const Color(0xFF1FC9C0),
-//         elevation: 0,
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back, color: Colors.white),
-//           onPressed: () => Navigator.pop(context),
-//         ),
-//         title: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const Text(
-//               'Medical Reports',
-//               style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-//             ),
-//             Text(
-//               'MR No: ${widget.patientMrNo}',
-//               style: const TextStyle(color: Colors.white70, fontSize: 12),
-//             ),
-//           ],
-//         ),
-//         bottom: TabBar(
-//           controller: _tabController,
-//           indicatorColor: Colors.white,
-//           indicatorWeight: 3,
-//           labelColor: Colors.white,
-//           unselectedLabelColor: Colors.white70,
-//           isScrollable: true, // Makes tabs scrollable on smaller screens
-//           tabs: const [
-//             Tab(text: 'Laboratory'),
-//             Tab(text: 'Gastro'),
-//             Tab(text: 'Radiology'),
-//             Tab(text: 'Prescription'),
-//           ],
-//         ),
-//       ),
-//       body: TabBarView(
-//         controller: _tabController,
-//         children: [
-//           _buildReportsGrid(laboratoryReports, 'Laboratory'),
-//           _buildReportsGrid(gastroReports, 'Gastro'),
-//           _buildReportsGrid(radiologyReports, 'Radiology'),
-//           _buildReportsGrid(prescriptionReports, 'Prescription'),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildReportsGrid(List<Map<String, dynamic>> reports, String category) {
-//     return reports.isEmpty
-//         ? Center(
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 Icon(
-//                   Icons.folder_open,
-//                   size: 64,
-//                   color: Colors.grey[400],
-//                 ),
-//                 const SizedBox(height: 16),
-//                 Text(
-//                   'No $category reports available',
-//                   style: TextStyle(
-//                     fontSize: 16,
-//                     color: Colors.grey[600],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           )
-//         : Padding(
-//             padding: const EdgeInsets.all(12), // Reduced padding
-//             child: GridView.builder(
-//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//                 crossAxisCount: 2,
-//                 crossAxisSpacing: 12, // Reduced spacing
-//                 mainAxisSpacing: 12, // Reduced spacing
-//                 childAspectRatio: 1.3, // Increased ratio for better content fit
-//               ),
-//               itemCount: reports.length,
-//               itemBuilder: (context, index) {
-//                 final report = reports[index];
-//                 return _buildReportCard(report, category);
-//               },
-//             ),
-//           );
-//   }
-
-//   Widget _buildReportCard(Map<String, dynamic> report, String category) {
-//     Color statusColor = Colors.green;
-//     String status = report['status']?.toString().toLowerCase() ?? 'normal';
-    
-//     if (status.contains('abnormal')) {
-//       statusColor = Colors.red;
-//     } else if (status.contains('low') || status.contains('positive')) {
-//       statusColor = Colors.orange;
-//     } else if (status.contains('completed')) {
-//       statusColor = Colors.blue;
-//     } else if (status.contains('active')) {
-//       statusColor = Colors.green;
-//     }
-
-//     return Container(
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(16),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.1),
-//             spreadRadius: 1,
-//             blurRadius: 4,
-//             offset: const Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: Material(
-//         color: Colors.transparent,
-//         child: InkWell(
-//           onTap: () {
-//             _showReportDetails(context, report, category);
-//           },
-//           borderRadius: BorderRadius.circular(16),
-//           child: Padding(
-//             padding: const EdgeInsets.all(10), // Reduced padding
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               mainAxisSize: MainAxisSize.min, // Minimize height usage
-//               children: [
-//                 // Header with icon and date
-//                 Row(
-//                   children: [
-//                     Container(
-//                       padding: const EdgeInsets.all(6), // Reduced padding
-//                       decoration: BoxDecoration(
-//                         color: const Color(0xFF1FC9C0).withOpacity(0.1),
-//                         borderRadius: BorderRadius.circular(8),
-//                       ),
-//                       child: Icon(
-//                         report['icon'] ?? Icons.description,
-//                         color: const Color(0xFF1FC9C0),
-//                         size: 18, // Smaller icon
-//                       ),
-//                     ),
-//                     const SizedBox(width: 6),
-//                     Expanded(
-//                       child: Text(
-//                         _formatDate(report['date'] ?? ''),
-//                         style: TextStyle(
-//                           fontSize: 10, // Smaller font
-//                           color: Colors.grey[600],
-//                         ),
-//                         maxLines: 1,
-//                         overflow: TextOverflow.ellipsis,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 const SizedBox(height: 8),
-                
-//                 // Title
-//                 Text(
-//                   report['name'] ?? '',
-//                   style: const TextStyle(
-//                     fontWeight: FontWeight.bold,
-//                     fontSize: 13, // Slightly smaller
-//                   ),
-//                   maxLines: 2,
-//                   overflow: TextOverflow.ellipsis,
-//                 ),
-//                 const SizedBox(height: 6),
-                
-//                 // Status indicator
-//                 Container(
-//                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-//                   decoration: BoxDecoration(
-//                     color: statusColor.withOpacity(0.1),
-//                     borderRadius: BorderRadius.circular(10),
-//                   ),
-//                   child: Text(
-//                     report['status'] ?? 'Normal',
-//                     style: TextStyle(
-//                       color: statusColor,
-//                       fontSize: 10,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                     maxLines: 1,
-//                     overflow: TextOverflow.ellipsis,
-//                   ),
-//                 ),
-//                 const SizedBox(height: 6),
-                
-//                 // Additional info based on category
-//                 if (report.containsKey('value'))
-//                   _buildInfoRow('Value', report['value']),
-//                 if (report.containsKey('dosage'))
-//                   _buildInfoRow('Dosage', report['dosage']),
-//                 if (report.containsKey('doctor'))
-//                   _buildInfoRow('Doctor', _formatDoctorName(report['doctor'])),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildInfoRow(String label, String value) {
-//     return Padding(
-//       padding: const EdgeInsets.only(top: 3),
-//       child: Row(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             '$label: ',
-//             style: TextStyle(
-//               fontSize: 9,
-//               color: Colors.grey[600],
-//               fontWeight: FontWeight.w500,
-//             ),
-//           ),
-//           Expanded(
-//             child: Text(
-//               value,
-//               style: const TextStyle(
-//                 fontSize: 9,
-//                 fontWeight: FontWeight.w500,
-//               ),
-//               maxLines: 1,
-//               overflow: TextOverflow.ellipsis,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   String _formatDate(String date) {
-//     if (date.isEmpty) return '';
-//     try {
-//       // Simple formatting - you can enhance this based on your date format
-//       return date;
-//     } catch (e) {
-//       return date;
-//     }
-//   }
-
-//   String _formatDoctorName(String doctor) {
-//     if (doctor.length > 15) {
-//       return '${doctor.substring(0, 12)}...';
-//     }
-//     return doctor;
-//   }
-
-//   void _showReportDetails(BuildContext context, Map<String, dynamic> report, String category) {
-//     showModalBottomSheet(
-//       context: context,
-//       isScrollControlled: true,
-//       backgroundColor: Colors.transparent,
-//       builder: (context) => Container(
-//         decoration: const BoxDecoration(
-//           color: Colors.white,
-//           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-//         ),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             // Handle bar
-//             Center(
-//               child: Padding(
-//                 padding: const EdgeInsets.only(top: 12),
-//                 child: Container(
-//                   width: 40,
-//                   height: 4,
-//                   decoration: BoxDecoration(
-//                     color: Colors.grey[300],
-//                     borderRadius: BorderRadius.circular(2),
-//                   ),
-//                 ),
-//               ),
-//             ),
-            
-//             // Content
-//             Padding(
-//               padding: const EdgeInsets.all(20),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   // Header
-//                   Row(
-//                     children: [
-//                       Container(
-//                         padding: const EdgeInsets.all(12),
-//                         decoration: BoxDecoration(
-//                           color: const Color(0xFF1FC9C0).withOpacity(0.1),
-//                           borderRadius: BorderRadius.circular(16),
-//                         ),
-//                         child: Icon(
-//                           report['icon'] ?? Icons.description,
-//                           color: const Color(0xFF1FC9C0),
-//                           size: 30,
-//                         ),
-//                       ),
-//                       const SizedBox(width: 16),
-//                       Expanded(
-//                         child: Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             Text(
-//                               report['name'] ?? '',
-//                               style: const TextStyle(
-//                                 fontSize: 18,
-//                                 fontWeight: FontWeight.bold,
-//                               ),
-//                             ),
-//                             const SizedBox(height: 4),
-//                             Text(
-//                               category,
-//                               style: TextStyle(
-//                                 color: Colors.grey[600],
-//                                 fontSize: 14,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   const SizedBox(height: 20),
-                  
-//                   // Details
-//                   _buildDetailItem('Date', report['date'] ?? 'N/A'),
-//                   const SizedBox(height: 12),
-//                   _buildDetailItem('Status', report['status'] ?? 'N/A'),
-//                   if (report.containsKey('value')) ...[
-//                     const SizedBox(height: 12),
-//                     _buildDetailItem('Value', report['value']),
-//                   ],
-//                   if (report.containsKey('dosage')) ...[
-//                     const SizedBox(height: 12),
-//                     _buildDetailItem('Dosage', report['dosage']),
-//                   ],
-//                   if (report.containsKey('doctor')) ...[
-//                     const SizedBox(height: 12),
-//                     _buildDetailItem('Doctor', report['doctor']),
-//                   ],
-//                   if (report.containsKey('findings')) ...[
-//                     const SizedBox(height: 12),
-//                     _buildDetailItem('Findings', report['findings']),
-//                   ],
-                  
-//                   const SizedBox(height: 24),
-                  
-//                   // Action buttons
-//                   Row(
-//                     children: [
-//                       Expanded(
-//                         child: ElevatedButton.icon(
-//                           onPressed: () {
-//                             Navigator.pop(context);
-//                           },
-//                           icon: const Icon(Icons.download, size: 18),
-//                           label: const Text('Download'),
-//                           style: ElevatedButton.styleFrom(
-//                             backgroundColor: const Color(0xFF1FC9C0),
-//                             foregroundColor: Colors.white,
-//                             padding: const EdgeInsets.symmetric(vertical: 12),
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(12),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                       const SizedBox(width: 12),
-//                       Expanded(
-//                         child: OutlinedButton.icon(
-//                           onPressed: () {
-//                             Navigator.pop(context);
-//                           },
-//                           icon: const Icon(Icons.share, size: 18),
-//                           label: const Text('Share'),
-//                           style: OutlinedButton.styleFrom(
-//                             foregroundColor: const Color(0xFF1FC9C0),
-//                             side: const BorderSide(color: Color(0xFF1FC9C0)),
-//                             padding: const EdgeInsets.symmetric(vertical: 12),
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(12),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   const SizedBox(height: 20), // Extra bottom padding
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildDetailItem(String label, String value) {
-//     return Row(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         SizedBox(
-//           width: 80,
-//           child: Text(
-//             label,
-//             style: TextStyle(
-//               color: Colors.grey[600],
-//               fontSize: 14,
-//             ),
-//           ),
-//         ),
-//         Expanded(
-//           child: Text(
-//             value,
-//             style: const TextStyle(
-//               fontSize: 14,
-//               fontWeight: FontWeight.w500,
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:dio/dio.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:path_provider/path_provider.dart';
-
-class ReportsScreen extends StatefulWidget {
-  final String patientMrNo;
-  final String patientName;
-
-  const ReportsScreen({
-    super.key,
-    required this.patientMrNo,
-    required this.patientName,
-  });
-
-  @override
-  State<ReportsScreen> createState() => _ReportsScreenState();
-}
-
-class _ReportsScreenState extends State<ReportsScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  List<Map<String, dynamic>> laboratoryReports = [];
-  List<Map<String, dynamic>> gastroReports = [];
-  List<Map<String, dynamic>> radiologyReports = [];
-  List<Map<String, dynamic>> prescriptionReports = [];
-
-  bool isLoading = true;
-  String? errorMessage;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 4, vsync: this);
-    fetchReports();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  Future<void> fetchReports() async {
-    setState(() {
-      isLoading = true;
-      errorMessage = null;
-    });
-
-    try {
-      final response = await http.get(
-        Uri.parse(
-            'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/labReports'),
-      );
-
-      if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body);
-        processReports(data);
-      } else {
-        setState(() {
-          errorMessage =
-              'Failed to load reports. Status code: ${response.statusCode}';
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        errorMessage = 'Error fetching reports: $e';
-        isLoading = false;
-      });
-    }
-  }
-
-  void processReports(List<dynamic> data) {
-    List<Map<String, dynamic>> labReports = [];
-    List<Map<String, dynamic>> gastro = [];
-    List<Map<String, dynamic>> radiology = [];
-    List<Map<String, dynamic>> prescription = [];
-
-    for (var item in data) {
-      String testType = item['testtype']?.toString().toUpperCase() ?? '';
-      String modality = item['modalitY_NM']?.toString().toUpperCase() ?? '';
-
-      Map<String, dynamic> report = {
-        'name': item['diagnostiC_NAME'] ?? 'Unknown Test',
-        'date': item['dT_SAMPLECOLLECTION'] ?? '',
-        'pat_diag_id': item['paT_DIAG_ID'],
-        'status': 'Completed',
-        'icon': _getIconForTest(item['diagnostiC_NAME'] ?? ''),
-      };
-
-      if (testType == 'LABORATORY' ||
-          modality.contains('BIOCHEMISTRY') ||
-          modality.contains('PATHOLOGY') ||
-          modality.contains('MICROBIOLOGY')) {
-        labReports.add(report);
-      } else if (modality.contains('RADIOLOGY') ||
-          modality.contains('X-RAY') ||
-          modality.contains('MRI') ||
-          modality.contains('CT') ||
-          modality.contains('ULTRASOUND')) {
-        radiology.add(report);
-      } else if (modality.contains('GASTRO') ||
-          modality.contains('ENDOSCOPY') ||
-          modality.contains('COLONOSCOPY')) {
-        gastro.add(report);
-      } else {
-        labReports.add(report);
-      }
-    }
-
-    setState(() {
-      laboratoryReports = labReports;
-      gastroReports = gastro;
-      radiologyReports = radiology;
-      prescriptionReports = prescription;
-      isLoading = false;
-    });
-  }
-
-  IconData _getIconForTest(String testName) {
-    String name = testName.toLowerCase();
-    if (name.contains('glucose')) return Icons.bloodtype;
-    if (name.contains('lipid')) return Icons.opacity;
-    if (name.contains('liver')) return Icons.healing;
-    if (name.contains('thyroid')) return Icons.monitor_heart;
-    if (name.contains('urine')) return Icons.water_drop;
-    if (name.contains('vitamin')) return Icons.wb_sunny;
-    if (name.contains('x-ray')) return Icons.medical_services;
-    if (name.contains('mri')) return Icons.monitor_heart;
-    if (name.contains('ct')) return Icons.view_in_ar;
-    return Icons.science;
-  }
-
-  String _formatDateFromAPI(String dateString) {
-    if (dateString.isEmpty) return '';
-    try {
-      DateTime dateTime = DateTime.parse(dateString);
-      return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
-    } catch (e) {
-      return dateString;
-    }
-  }
-
-  // 🔥 Download PDF and open in-app
-  void _openReport(Map<String, dynamic> report) async {
-    final reportId = report['pat_diag_id'];
-    if (reportId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Report ID not available')),
-      );
-      return;
-    }
-
-    final pdfUrl =
-        'https://btkhospital.com/patientreports/Reports/PDF/$reportId.pdf';
-
-    try {
-      // Download PDF
-      final dir = await getApplicationDocumentsDirectory();
-      final filePath = '${dir.path}/$reportId.pdf';
-      final dio = Dio();
-
-      await dio.download(pdfUrl, filePath);
-
-      // Open PDF in PDFView
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(
-              title: Text(report['name'] ?? 'Report PDF'),
-              backgroundColor: const Color(0xFF1FC9C0),
-            ),
-            body: PDFView(
-              filePath: filePath,
-            ),
-          ),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Cannot open report: $e')),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1FC9C0),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Medical Reports',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-            ),
-            Text(
-              'MR No: ${widget.patientMrNo}',
-              style: const TextStyle(color: Colors.white70, fontSize: 12),
-            ),
-          ],
-        ),
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          indicatorWeight: 3,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          isScrollable: true,
-          tabs: const [
-            Tab(text: 'Laboratory'),
-            Tab(text: 'Gastro'),
-            Tab(text: 'Radiology'),
-            Tab(text: 'Prescription'),
-          ],
-        ),
-      ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFF1FC9C0)))
-          : errorMessage != null
-              ? Center(child: Text(errorMessage!))
-              : TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildReportsGrid(laboratoryReports),
-                    _buildReportsGrid(gastroReports),
-                    _buildReportsGrid(radiologyReports),
-                    _buildReportsGrid(prescriptionReports),
-                  ],
-                ),
-    );
-  }
-
-  Widget _buildReportsGrid(List<Map<String, dynamic>> reports) {
-    if (reports.isEmpty) {
-      return const Center(child: Text('No reports available'));
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.3,
-        ),
-        itemCount: reports.length,
-        itemBuilder: (context, index) {
-          final report = reports[index];
-          String formattedDate = _formatDateFromAPI(report['date'] ?? '');
-          return GestureDetector(
-            onTap: () => _openReport(report),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1FC9C0).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(
-                            report['icon'] ?? Icons.description,
-                            color: const Color(0xFF1FC9C0),
-                            size: 18,
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            formattedDate,
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey[600],
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      report['name'] ?? '',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        report['status'] ?? 'Completed',
-                        style: const TextStyle(
-                          color: Colors.green,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-
-
+// import 'dart:io';
 
 // import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
-// import 'package:url_launcher/url_launcher.dart';
 // import 'dart:convert';
-// import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:dio/dio.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // class ReportsScreen extends StatefulWidget {
 //   final String patientMrNo;
@@ -890,7 +37,7 @@ class _ReportsScreenState extends State<ReportsScreen>
 //   void initState() {
 //     super.initState();
 //     _tabController = TabController(length: 4, vsync: this);
-//     fetchReports();
+//     fetchAllReports();
 //   }
 
 //   @override
@@ -899,28 +46,24 @@ class _ReportsScreenState extends State<ReportsScreen>
 //     super.dispose();
 //   }
 
-//   Future<void> fetchReports() async {
+//   Future<void> fetchAllReports() async {
 //     setState(() {
 //       isLoading = true;
 //       errorMessage = null;
 //     });
 
 //     try {
-//       final response = await http.get(
-//         Uri.parse(
-//             'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/reports'),
-//       );
+//       // Fetch all reports concurrently
+//       await Future.wait([
+//         fetchLaboratoryReports(),
+//         fetchGastroReports(),
+//         fetchRadiologyReports(),
+//         fetchPrescriptionReports(),
+//       ]);
 
-//       if (response.statusCode == 200) {
-//         List<dynamic> data = json.decode(response.body);
-//         processReports(data);
-//       } else {
-//         setState(() {
-//           errorMessage =
-//               'Failed to load reports. Status code: ${response.statusCode}';
-//           isLoading = false;
-//         });
-//       }
+//       setState(() {
+//         isLoading = false;
+//       });
 //     } catch (e) {
 //       setState(() {
 //         errorMessage = 'Error fetching reports: $e';
@@ -929,52 +72,110 @@ class _ReportsScreenState extends State<ReportsScreen>
 //     }
 //   }
 
-//   void processReports(List<dynamic> data) {
-//     List<Map<String, dynamic>> labReports = [];
-//     List<Map<String, dynamic>> gastro = [];
-//     List<Map<String, dynamic>> radiology = [];
-//     List<Map<String, dynamic>> prescription = [];
+//   Future<void> fetchLaboratoryReports() async {
+//     try {
+//       final response = await http.get(
+//         Uri.parse(
+//             'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/labReports'),
+//       );
 
-//     for (var item in data) {
-//       String testType = item['testtype']?.toString().toUpperCase() ?? '';
-//       String modality = item['modalitY_NM']?.toString().toUpperCase() ?? '';
-
-//       Map<String, dynamic> report = {
-//         'name': item['diagnostiC_NAME'] ?? 'Unknown Test',
-//         'date': item['dT_SAMPLECOLLECTION'] ?? '',
-//         'pat_diag_id': item['paT_DIAG_ID'],
-//         'status': 'Completed',
-//         'icon': _getIconForTest(item['diagnostiC_NAME'] ?? ''),
-//       };
-
-//       if (testType == 'LABORATORY' ||
-//           modality.contains('BIOCHEMISTRY') ||
-//           modality.contains('PATHOLOGY') ||
-//           modality.contains('MICROBIOLOGY')) {
-//         labReports.add(report);
-//       } else if (modality.contains('RADIOLOGY') ||
-//           modality.contains('X-RAY') ||
-//           modality.contains('MRI') ||
-//           modality.contains('CT') ||
-//           modality.contains('ULTRASOUND')) {
-//         radiology.add(report);
-//       } else if (modality.contains('GASTRO') ||
-//           modality.contains('ENDOSCOPY') ||
-//           modality.contains('COLONOSCOPY')) {
-//         gastro.add(report);
-//       } else {
-//         labReports.add(report);
+//       if (response.statusCode == 200) {
+//         List<dynamic> data = json.decode(response.body);
+//         setState(() {
+//           laboratoryReports = data.map((item) => {
+//             'name': item['diagnostiC_NAME'] ?? 'Unknown Test',
+//             'date': item['dT_SAMPLECOLLECTION'] ?? '',
+//             'pat_diag_id': item['paT_DIAG_ID'],
+//             'status': 'Completed',
+//             'modality': item['modalitY_NM'] ?? '',
+//             'testtype': item['testtype'] ?? '',
+//             'icon': _getIconForTest(item['diagnostiC_NAME'] ?? ''),
+//           }).toList();
+//         });
 //       }
+//     } catch (e) {
+//       print('Error fetching laboratory reports: $e');
 //     }
-
-//     setState(() {
-//       laboratoryReports = labReports;
-//       gastroReports = gastro;
-//       radiologyReports = radiology;
-//       prescriptionReports = prescription;
-//       isLoading = false;
-//     });
 //   }
+
+//   Future<void> fetchGastroReports() async {
+//     try {
+//       final response = await http.get(
+//         Uri.parse(
+//             'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/gastroReports'),
+//       );
+
+//       if (response.statusCode == 200) {
+//         List<dynamic> data = json.decode(response.body);
+//         setState(() {
+//           gastroReports = data.map((item) => {
+//             'name': item['diagnostiC_NAME'] ?? 'Unknown Test',
+//             'date': item['dT_SAMPLECOLLECTION'] ?? '',
+//             'pat_diag_id': item['paT_DIAG_ID'],
+//             'status': 'Completed',
+//             'modality': item['modalitY_NM'] ?? '',
+//             'testtype': item['testtype'] ?? '',
+//             'icon': Icons.medical_services, // Icon for gastro reports
+//           }).toList();
+//         });
+//       }
+//     } catch (e) {
+//       print('Error fetching gastro reports: $e');
+//     }
+//   }
+
+//   Future<void> fetchRadiologyReports() async {
+//     try {
+//       final response = await http.get(
+//         Uri.parse(
+//             'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/radiologyReports'),
+//       );
+
+//       if (response.statusCode == 200) {
+//         List<dynamic> data = json.decode(response.body);
+//         setState(() {
+//           radiologyReports = data.map((item) => {
+//             'name': item['diagnostiC_NAME'] ?? 'Unknown Test',
+//             'date': item['dT_SAMPLECOLLECTION'] ?? '',
+//             'pat_diag_id': item['paT_DIAG_ID'],
+//             'status': 'Completed',
+//             'modality': item['modalitY_NM'] ?? '',
+//             'testtype': item['testtype'] ?? '',
+//             'icon': Icons.radio, // Icon for radiology reports
+//           }).toList();
+//         });
+//       }
+//     } catch (e) {
+//       print('Error fetching radiology reports: $e');
+//     }
+//   }
+
+// Future<void> fetchPrescriptionReports() async {
+//   try {
+//     final response = await http.get(
+//       Uri.parse(
+//           'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/prescriptionReports'),
+//     );
+
+//     if (response.statusCode == 200) {
+//       List<dynamic> data = json.decode(response.body);
+//       setState(() {
+//         prescriptionReports = data.map((item) => {
+//           'name': 'Prescription - ${item['doctor'] ?? 'Dr. Unknown'}',
+//           'date': item['visiT_DATE'] ?? '',
+//           'pat_visit_id': item['paT_VISIT_ID'], // Note: using pat_visit_id instead of pat_diag_id
+//           'doctor': item['doctor'] ?? 'Unknown Doctor',
+//           'department': item['department'] ?? 'Unknown Department',
+//           'status': 'Completed',
+//           'icon': Icons.assignment, // Icon for prescription reports
+//           'visit_date': item['visiT_DATE'] ?? '',
+//         }).toList();
+//       });
+//     }
+//   } catch (e) {
+//     print('Error fetching prescription reports: $e');
+//   }
+// }
 
 //   IconData _getIconForTest(String testName) {
 //     String name = testName.toLowerCase();
@@ -1001,25 +202,98 @@ class _ReportsScreenState extends State<ReportsScreen>
 //   }
 
 // void _openReport(Map<String, dynamic> report) async {
-//   final reportId = report['pat_diag_id'];
-//   if (reportId == null) {
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text('Report ID not available')),
-//     );
-//     return;
+//   final patDiagId = report['pat_diag_id'];
+//   if (patDiagId == null) return;
+
+//   String reportName = '';
+//   String rptId = '';
+//   String parameters = patDiagId.toString(); // default
+
+//   final testType = report['testtype']?.toString().toUpperCase() ?? '';
+//   final modality = report['modality']?.toString().toUpperCase() ?? '';
+
+//   // ✅ Decide report type + correct rptId
+//   if (testType == 'LABORATORY' || modality.contains('LAB')) {
+//     reportName = 'Labrpt';
+//     rptId = '19';
+//   } 
+//   else if (testType == 'GASTRO' || modality.contains('GASTRO')) {
+//     reportName = 'GastRpt';
+//     rptId = '64';
+//   } 
+//   else if (testType == 'RADIOLOGY' || modality.contains('RADIOLOGY')) {
+//     reportName = 'RadRpt';
+//     rptId = '22';
+//   } 
+//   else {
+//     reportName = 'Prescrpt';
+//     rptId = '19';
 //   }
 
-//   final pdfUrl = 'https://btkhospital.com/patientreports/Reports/PDF/$reportId.pdf';
-//   final Uri uri = Uri.parse(pdfUrl);
+//   final pdfUrl =
+//       'http://172.16.40.10:8080/api/PatientReport/GenerateReport'
+//       '?rptId=$rptId'
+//       '&reportName=$reportName'
+//       '&parameters=$parameters'
+//       '&user=MobileApp';
 
-//   if (await canLaunchUrl(uri)) {
-//     await launchUrl(uri, mode: LaunchMode.externalApplication); // ✅ opens external PDF app
-//   } else {
+//   try {
+//     // Show loader
+//     showDialog(
+//       context: context,
+//       barrierDismissible: false,
+//       builder: (_) => const Center(
+//         child: CircularProgressIndicator(),
+//       ),
+//     );
+
+//     final dir = await getApplicationDocumentsDirectory();
+//     final filePath = '${dir.path}/${reportName}_$parameters.pdf';
+
+//     final dio = Dio();
+//     dio.options.connectTimeout = const Duration(seconds: 30);
+//     dio.options.receiveTimeout = const Duration(seconds: 30);
+
+//     final response = await dio.get(
+//       pdfUrl,
+//       options: Options(responseType: ResponseType.bytes),
+//     );
+
+//     final contentType = response.headers.value("content-type");
+
+//     if (contentType == null || !contentType.contains("application/pdf")) {
+//       Navigator.pop(context);
+//       throw Exception("Server did not return a valid PDF");
+//     }
+
+//     final file = File(filePath);
+//     await file.writeAsBytes(response.data, flush: true);
+
+//     Navigator.pop(context);
+
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (context) => Scaffold(
+//           appBar: AppBar(
+//             title: Text(report['name'] ?? 'Report'),
+//             backgroundColor: const Color(0xFF1FC9C0),
+//           ),
+//           body: SfPdfViewer.file(
+//             File(filePath),
+//           ),
+//         ),
+//       ),
+//     );
+//   } catch (e) {
+//     Navigator.pop(context);
+
 //     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text('Cannot open report. Please install a PDF viewer.')),
+//       SnackBar(content: Text("Error opening report: $e")),
 //     );
 //   }
 // }
+
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
@@ -1076,106 +350,1624 @@ class _ReportsScreenState extends State<ReportsScreen>
 //     );
 //   }
 
-//   Widget _buildReportsGrid(List<Map<String, dynamic>> reports) {
-//     if (reports.isEmpty) {
-//       return const Center(child: Text('No reports available'));
-//     }
+//   // Widget _buildReportsGrid(List<Map<String, dynamic>> reports) {
+//   //   if (reports.isEmpty) {
+//   //     return const Center(child: Text('No reports available'));
+//   //   }
 
-//     return Padding(
-//       padding: const EdgeInsets.all(12),
-//       child: GridView.builder(
-//         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//           crossAxisCount: 2,
-//           crossAxisSpacing: 12,
-//           mainAxisSpacing: 12,
-//           childAspectRatio: 1.3,
-//         ),
-//         itemCount: reports.length,
-//         itemBuilder: (context, index) {
-//           final report = reports[index];
-//           String formattedDate = _formatDateFromAPI(report['date'] ?? '');
-//           return GestureDetector(
-//             onTap: () => _openReport(report),
-//             child: Container(
-//               decoration: BoxDecoration(
-//                 color: Colors.white,
-//                 borderRadius: BorderRadius.circular(16),
-//                 boxShadow: [
-//                   BoxShadow(
-//                     color: Colors.grey.withOpacity(0.1),
-//                     spreadRadius: 1,
-//                     blurRadius: 4,
-//                     offset: const Offset(0, 2),
-//                   ),
-//                 ],
-//               ),
-//               child: Padding(
-//                 padding: const EdgeInsets.all(10),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Row(
-//                       children: [
-//                         Container(
-//                           padding: const EdgeInsets.all(6),
-//                           decoration: BoxDecoration(
-//                             color: const Color(0xFF1FC9C0).withOpacity(0.1),
-//                             borderRadius: BorderRadius.circular(8),
-//                           ),
-//                           child: Icon(
-//                             report['icon'] ?? Icons.description,
-//                             color: const Color(0xFF1FC9C0),
-//                             size: 18,
-//                           ),
+//   //   return Padding(
+//   //     padding: const EdgeInsets.all(12),
+//   //     child: GridView.builder(
+//   //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//   //         crossAxisCount: 2,
+//   //         crossAxisSpacing: 12,
+//   //         mainAxisSpacing: 12,
+//   //         childAspectRatio: 1.3,
+//   //       ),
+//   //       itemCount: reports.length,
+//   //       itemBuilder: (context, index) {
+//   //         final report = reports[index];
+//   //         String formattedDate = _formatDateFromAPI(report['date'] ?? '');
+//   //         return GestureDetector(
+//   //           onTap: () => _openReport(report),
+//   //           child: Container(
+//   //             decoration: BoxDecoration(
+//   //               color: Colors.white,
+//   //               borderRadius: BorderRadius.circular(16),
+//   //               boxShadow: [
+//   //                 BoxShadow(
+//   //                   color: Colors.grey.withOpacity(0.1),
+//   //                   spreadRadius: 1,
+//   //                   blurRadius: 4,
+//   //                   offset: const Offset(0, 2),
+//   //                 ),
+//   //               ],
+//   //             ),
+//   //             child: Padding(
+//   //               padding: const EdgeInsets.all(10),
+//   //               child: Column(
+//   //                 crossAxisAlignment: CrossAxisAlignment.start,
+//   //                 children: [
+//   //                   Row(
+//   //                     children: [
+//   //                       Container(
+//   //                         padding: const EdgeInsets.all(6),
+//   //                         decoration: BoxDecoration(
+//   //                           color: const Color(0xFF1FC9C0).withOpacity(0.1),
+//   //                           borderRadius: BorderRadius.circular(8),
+//   //                         ),
+//   //                         child: Icon(
+//   //                           report['icon'] ?? Icons.description,
+//   //                           color: const Color(0xFF1FC9C0),
+//   //                           size: 18,
+//   //                         ),
+//   //                       ),
+//   //                       const SizedBox(width: 6),
+//   //                       Expanded(
+//   //                         child: Text(
+//   //                           formattedDate,
+//   //                           style: TextStyle(
+//   //                             fontSize: 10,
+//   //                             color: Colors.grey[600],
+//   //                           ),
+//   //                           maxLines: 1,
+//   //                           overflow: TextOverflow.ellipsis,
+//   //                         ),
+//   //                       ),
+//   //                     ],
+//   //                   ),
+//   //                   const SizedBox(height: 8),
+//   //                   Text(
+//   //                     report['name'] ?? '',
+//   //                     style: const TextStyle(
+//   //                       fontWeight: FontWeight.bold,
+//   //                       fontSize: 13,
+//   //                     ),
+//   //                     maxLines: 2,
+//   //                     overflow: TextOverflow.ellipsis,
+//   //                   ),
+//   //                   const SizedBox(height: 6),
+//   //                   Container(
+//   //                     padding:
+//   //                         const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+//   //                     decoration: BoxDecoration(
+//   //                       color: Colors.green.withOpacity(0.1),
+//   //                       borderRadius: BorderRadius.circular(10),
+//   //                     ),
+//   //                     child: Text(
+//   //                       report['status'] ?? 'Completed',
+//   //                       style: const TextStyle(
+//   //                         color: Colors.green,
+//   //                         fontSize: 10,
+//   //                         fontWeight: FontWeight.w600,
+//   //                       ),
+//   //                     ),
+//   //                   ),
+//   //                 ],
+//   //               ),
+//   //             ),
+//   //           ),
+//   //         );
+//   //       },
+//   //     ),
+//   //   );
+//   // }
+
+//  Widget _buildReportsGrid(List<Map<String, dynamic>> reports) {
+//   if (reports.isEmpty) {
+//     return const Center(child: Text('No reports available'));
+//   }
+
+//   return Padding(
+//     padding: const EdgeInsets.all(12),
+//     child: GridView.builder(
+//       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//         crossAxisCount: 2,
+//         crossAxisSpacing: 12,
+//         mainAxisSpacing: 12,
+//         childAspectRatio: 1.2, // 👈 Changed from 1.3 to 1.2 to give more vertical space
+//       ),
+//       itemCount: reports.length,
+//       itemBuilder: (context, index) {
+//         final report = reports[index];
+//         String formattedDate = _formatDateFromAPI(report['date'] ?? '');
+        
+//         return GestureDetector(
+//           onTap: () => _openReport(report),
+//           child: Container(
+//             decoration: BoxDecoration(
+//               color: Colors.white,
+//               borderRadius: BorderRadius.circular(16),
+//               boxShadow: [
+//                 BoxShadow(
+//                   color: Colors.grey.withOpacity(0.1),
+//                   spreadRadius: 1,
+//                   blurRadius: 4,
+//                   offset: const Offset(0, 2),
+//                 ),
+//               ],
+//             ),
+//             child: Padding(
+//               padding: const EdgeInsets.all(8), // 👈 Reduced from 10 to 8
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 mainAxisSize: MainAxisSize.min, // 👈 Added to minimize column height
+//                 children: [
+//                   Row(
+//                     children: [
+//                       Container(
+//                         padding: const EdgeInsets.all(6),
+//                         decoration: BoxDecoration(
+//                           color: const Color(0xFF1FC9C0).withOpacity(0.1),
+//                           borderRadius: BorderRadius.circular(8),
 //                         ),
-//                         const SizedBox(width: 6),
-//                         Expanded(
-//                           child: Text(
-//                             formattedDate,
-//                             style: TextStyle(
-//                               fontSize: 10,
-//                               color: Colors.grey[600],
-//                             ),
-//                             maxLines: 1,
-//                             overflow: TextOverflow.ellipsis,
-//                           ),
+//                         child: Icon(
+//                           report['icon'] ?? Icons.description,
+//                           color: const Color(0xFF1FC9C0),
+//                           size: 16, // 👈 Reduced from 18 to 16
 //                         ),
-//                       ],
-//                     ),
-//                     const SizedBox(height: 8),
-//                     Text(
-//                       report['name'] ?? '',
-//                       style: const TextStyle(
-//                         fontWeight: FontWeight.bold,
-//                         fontSize: 13,
 //                       ),
-//                       maxLines: 2,
+//                       const SizedBox(width: 4), // 👈 Reduced from 6 to 4
+//                       Expanded(
+//                         child: Text(
+//                           formattedDate,
+//                           style: TextStyle(
+//                             fontSize: 9, // 👈 Reduced from 10 to 9
+//                             color: Colors.grey[600],
+//                           ),
+//                           maxLines: 1,
+//                           overflow: TextOverflow.ellipsis,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   const SizedBox(height: 6), // 👈 Reduced from 8 to 6
+//                   Text(
+//                     report['name'] ?? '',
+//                     style: const TextStyle(
+//                       fontWeight: FontWeight.bold,
+//                       fontSize: 12, // 👈 Reduced from 13 to 12
+//                     ),
+//                     maxLines: 2,
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                   if (report['doctor'] != null) ...[
+//                     const SizedBox(height: 2), // 👈 Reduced from 4 to 2
+//                     Text(
+//                       report['doctor'],
+//                       style: TextStyle(
+//                         fontSize: 10, // 👈 Reduced from 11 to 10
+//                         color: Colors.grey[600],
+//                       ),
+//                       maxLines: 1,
 //                       overflow: TextOverflow.ellipsis,
 //                     ),
-//                     const SizedBox(height: 6),
+//                   ],
+//                   if (report['department'] != null) ...[
+//                     const SizedBox(height: 2),
 //                     Container(
-//                       padding:
-//                           const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+//                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1), // 👈 Reduced padding
 //                       decoration: BoxDecoration(
-//                         color: Colors.green.withOpacity(0.1),
-//                         borderRadius: BorderRadius.circular(10),
+//                         color: Colors.blue.withOpacity(0.1),
+//                         borderRadius: BorderRadius.circular(8), // 👈 Reduced from 10 to 8
 //                       ),
 //                       child: Text(
-//                         report['status'] ?? 'Completed',
+//                         report['department'],
 //                         style: const TextStyle(
-//                           color: Colors.green,
-//                           fontSize: 10,
+//                           color: Colors.blue,
+//                           fontSize: 8, // 👈 Reduced from 9 to 8
 //                           fontWeight: FontWeight.w600,
 //                         ),
 //                       ),
 //                     ),
 //                   ],
-//                 ),
+//                   const SizedBox(height: 4), // 👈 Reduced from 6 to 4
+//                   Container(
+//                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2), // 👈 Reduced horizontal padding
+//                     decoration: BoxDecoration(
+//                       color: Colors.green.withOpacity(0.1),
+//                       borderRadius: BorderRadius.circular(8), // 👈 Reduced from 10 to 8
+//                     ),
+//                     child: Text(
+//                       report['status'] ?? 'Completed',
+//                       style: const TextStyle(
+//                         color: Colors.green,
+//                         fontSize: 9, // 👈 Reduced from 10 to 9
+//                         fontWeight: FontWeight.w600,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
 //               ),
 //             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
+//           ),
+//         );
+//       },
+//     ),
+//   );
 // }
+// }
+
+
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:flutter/services.dart'; // For clipboard functionality if needed
+
+class ReportsScreen extends StatefulWidget {
+  final String patientMrNo;
+  final String patientName;
+
+  const ReportsScreen({
+    super.key,
+    required this.patientMrNo,
+    required this.patientName,
+  });
+
+  @override
+  State<ReportsScreen> createState() => _ReportsScreenState();
+}
+
+class _ReportsScreenState extends State<ReportsScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  List<Map<String, dynamic>> laboratoryReports = [];
+  List<Map<String, dynamic>> gastroReports = [];
+  List<Map<String, dynamic>> radiologyReports = [];
+  List<Map<String, dynamic>> prescriptionReports = [];
+
+  bool isLoading = true;
+  String? errorMessage;
+
+  // Color scheme
+  final Color primaryColor = const Color(0xFF1FC9C0);
+  final Color accentColor = const Color(0xFF2E3B4E);
+  final Color backgroundColor = Colors.white;
+  final Color cardBackgroundColor = Colors.white;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+    fetchAllReports();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  Future<void> fetchAllReports() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
+    });
+
+    try {
+      await Future.wait([
+        fetchLaboratoryReports(),
+        fetchGastroReports(),
+        fetchRadiologyReports(),
+        fetchPrescriptionReports(),
+      ]);
+
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Error fetching reports: $e';
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchLaboratoryReports() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/labReports'),
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        setState(() {
+          laboratoryReports = data.map((item) => {
+            'name': item['diagnostiC_NAME'] ?? 'Unknown Test',
+            'date': item['dT_SAMPLECOLLECTION'] ?? '',
+            'pat_diag_id': item['paT_DIAG_ID'],
+            'modality': item['modalitY_NM'] ?? '',
+            'testtype': item['testtype'] ?? '',
+            'icon': _getIconForTest(item['diagnostiC_NAME'] ?? ''),
+            'type': 'Laboratory',
+          }).toList();
+        });
+      }
+    } catch (e) {
+      print('Error fetching laboratory reports: $e');
+    }
+  }
+
+  Future<void> fetchGastroReports() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/gastroReports'),
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        setState(() {
+          gastroReports = data.map((item) => {
+            'name': item['diagnostiC_NAME'] ?? 'Unknown Test',
+            'date': item['dT_SAMPLECOLLECTION'] ?? '',
+            'pat_diag_id': item['paT_DIAG_ID'],
+            'modality': item['modalitY_NM'] ?? '',
+            'testtype': item['testtype'] ?? '',
+            'icon': Icons.medical_services,
+            'type': 'Gastro',
+          }).toList();
+        });
+      }
+    } catch (e) {
+      print('Error fetching gastro reports: $e');
+    }
+  }
+
+  Future<void> fetchRadiologyReports() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/radiologyReports'),
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        setState(() {
+          radiologyReports = data.map((item) => {
+            'name': item['diagnostiC_NAME'] ?? 'Unknown Test',
+            'date': item['dT_SAMPLECOLLECTION'] ?? '',
+            'pat_diag_id': item['paT_DIAG_ID'],
+            'modality': item['modalitY_NM'] ?? '',
+            'testtype': item['testtype'] ?? '',
+            'icon': Icons.radio,
+            'type': 'Radiology',
+          }).toList();
+        });
+      }
+    } catch (e) {
+      print('Error fetching radiology reports: $e');
+    }
+  }
+
+  Future<void> fetchPrescriptionReports() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'http://172.16.40.10:8080/api/Patient/${widget.patientMrNo}/prescriptionReports'),
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        setState(() {
+          prescriptionReports = data.map((item) => {
+            'name': 'Prescription',
+            'date': item['visiT_DATE'] ?? '',
+            'pat_visit_id': item['paT_VISIT_ID'],
+            'doctor': item['doctor'] ?? 'Unknown Doctor',
+            'department': item['department'] ?? 'Unknown Department',
+            'icon': Icons.description_outlined,
+            'visit_date': item['visiT_DATE'] ?? '',
+            'type': 'Prescription',
+          }).toList();
+        });
+      }
+    } catch (e) {
+      print('Error fetching prescription reports: $e');
+    }
+  }
+
+  IconData _getIconForTest(String testName) {
+    String name = testName.toLowerCase();
+    if (name.contains('glucose')) return Icons.bloodtype_outlined;
+    if (name.contains('lipid')) return Icons.opacity_outlined;
+    if (name.contains('liver')) return Icons.healing_outlined;
+    if (name.contains('thyroid')) return Icons.monitor_heart_outlined;
+    if (name.contains('urine')) return Icons.water_drop_outlined;
+    if (name.contains('vitamin')) return Icons.wb_sunny_outlined;
+    if (name.contains('x-ray')) return Icons.medical_services_outlined;
+    if (name.contains('mri')) return Icons.monitor_heart_outlined;
+    if (name.contains('ct')) return Icons.view_in_ar_outlined;
+    return Icons.science_outlined;
+  }
+
+  String _formatDateFromAPI(String dateString) {
+    if (dateString.isEmpty) return '';
+    try {
+      DateTime dateTime = DateTime.parse(dateString);
+      final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return '${dateTime.day} ${months[dateTime.month - 1]} ${dateTime.year}';
+    } catch (e) {
+      return dateString;
+    }
+  }
+Future<void> _downloadReport(String url, String fileName, String reportName) async {
+  // Show download progress dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const CircularProgressIndicator(
+                  color: Colors.blue,
+                  strokeWidth: 3,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                reportName,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF2E3B4E),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Downloading report',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+              const Text(
+                'Please wait...',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+
+  try {
+    final dio = Dio();
+    dio.options.connectTimeout = const Duration(seconds: 30);
+    dio.options.receiveTimeout = const Duration(seconds: 30);
+
+    final response = await dio.get(
+      url,
+      options: Options(responseType: ResponseType.bytes),
+    );
+
+    // For Android 10 and above, we need to use the Downloads folder
+    Directory? downloadsDir;
+    
+    if (Platform.isAndroid) {
+      // Try to get the Downloads directory
+      downloadsDir = Directory('/storage/emulated/0/Download');
+      
+      // Check if directory exists, if not try alternative paths
+      if (!await downloadsDir.exists()) {
+        downloadsDir = Directory('/sdcard/Download');
+      }
+      if (!await downloadsDir.exists()) {
+        downloadsDir = Directory('/storage/self/primary/Download');
+      }
+      
+      // If still not found, fallback to app documents
+      if (!await downloadsDir.exists()) {
+        downloadsDir = await getExternalStorageDirectory();
+      }
+    } else if (Platform.isIOS) {
+      downloadsDir = await getApplicationDocumentsDirectory();
+    }
+
+    // If we couldn't get downloads directory, fallback to app documents
+    if (downloadsDir == null || !await downloadsDir.exists()) {
+      downloadsDir = await getApplicationDocumentsDirectory();
+    }
+
+    // Create a clean filename
+    String cleanFileName = fileName.replaceAll(' ', '_');
+    String filePath = '${downloadsDir.path}/$cleanFileName';
+    
+    File file = File(filePath);
+    
+    // If file exists, add number to avoid overwriting
+    if (await file.exists()) {
+      int counter = 1;
+      final nameWithoutExt = cleanFileName.substring(0, cleanFileName.lastIndexOf('.'));
+      final ext = cleanFileName.substring(cleanFileName.lastIndexOf('.'));
+      
+      // Generate new filename with counter
+      String newFileName;
+      do {
+        newFileName = '${nameWithoutExt}_$counter$ext';
+        filePath = '${downloadsDir.path}/$newFileName';
+        file = File(filePath);
+        counter++;
+      } while (await file.exists());
+      
+      cleanFileName = newFileName;
+    }
+
+    await file.writeAsBytes(response.data, flush: true);
+
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context); // Close download dialog
+    }
+
+    // Show success message with option to open
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  'Download Complete',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Saved to: $cleanFileName',
+              style: const TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        action: SnackBarAction(
+          label: 'OPEN',
+          textColor: Colors.white,
+          onPressed: () {
+            _openPDF(filePath, cleanFileName);
+          },
+        ),
+      ),
+    );
+  } catch (e) {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context); // Close download dialog
+    }
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.error_outline, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(child: Text("Download failed: ${e.toString()}")),
+          ],
+        ),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+}
+  void _openPDF(String filePath, String fileName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: Text(
+              fileName,
+              style: const TextStyle(fontSize: 16),
+            ),
+            backgroundColor: primaryColor,
+            elevation: 0,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.share),
+                onPressed: () {
+                  // Share functionality can be added here
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Share feature coming soon')),
+                  );
+                },
+              ),
+            ],
+          ),
+          body: SfPdfViewer.file(
+            File(filePath),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // void _openReport(Map<String, dynamic> report) async {
+  //   final patDiagId = report['pat_diag_id'];
+  //   final patVisitId = report['pat_visit_id'];
+    
+  //   String reportName = '';
+  //   String rptId = '';
+  //   String parameters = '';
+    
+  //   if (patVisitId != null) {
+  //     parameters = patVisitId.toString();
+  //     reportName = 'Prescrpt';
+  //     rptId = '19';
+  //   } else if (patDiagId != null) {
+  //     parameters = patDiagId.toString();
+      
+  //     final testType = report['testtype']?.toString().toUpperCase() ?? '';
+  //     final modality = report['modality']?.toString().toUpperCase() ?? '';
+
+  //     if (testType == 'LABORATORY' || modality.contains('LAB')) {
+  //       reportName = 'Labrpt';
+  //       rptId = '19';
+  //     } else if (testType == 'GASTRO' || modality.contains('GASTRO')) {
+  //       reportName = 'GastRpt';
+  //       rptId = '64';
+  //     } else if (testType == 'RADIOLOGY' || modality.contains('RADIOLOGY')) {
+  //       reportName = 'RadRpt';
+  //       rptId = '22';
+  //     } else {
+  //       reportName = 'Prescrpt';
+  //       rptId = '19';
+  //     }
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Cannot open report: No valid ID found")),
+  //     );
+  //     return;
+  //   }
+
+  //   final pdfUrl =
+  //       'http://172.16.40.10:8080/api/PatientReport/GenerateReport'
+  //       '?rptId=$rptId'
+  //       '&reportName=$reportName'
+  //       '&parameters=$parameters'
+  //       '&user=MobileApp';
+
+  //   try {
+  //     showDialog(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (_) => Center(
+  //         child: Container(
+  //           padding: const EdgeInsets.all(20),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(16),
+  //           ),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               const CircularProgressIndicator(color: Color(0xFF1FC9C0)),
+  //               const SizedBox(height: 16),
+  //               Text(
+  //                 'Generating Report...',
+  //                 style: TextStyle(color: Colors.grey[600]),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     );
+
+  //     final dir = await getApplicationDocumentsDirectory();
+  //     final fileName = '${reportName}_$parameters.pdf';
+  //     final filePath = '${dir.path}/$fileName';
+
+  //     final dio = Dio();
+  //     dio.options.connectTimeout = const Duration(seconds: 30);
+  //     dio.options.receiveTimeout = const Duration(seconds: 30);
+
+  //     final response = await dio.get(
+  //       pdfUrl,
+  //       options: Options(responseType: ResponseType.bytes),
+  //     );
+
+  //     final contentType = response.headers.value("content-type");
+
+  //     if (contentType == null || !contentType.contains("application/pdf")) {
+  //       Navigator.pop(context);
+  //       throw Exception("Server did not return a valid PDF");
+  //     }
+
+  //     final file = File(filePath);
+  //     await file.writeAsBytes(response.data, flush: true);
+
+  //     Navigator.pop(context);
+
+  //     // Show options dialog
+  //     showModalBottomSheet(
+  //       context: context,
+  //       shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+  //       ),
+  //       builder: (context) => Container(
+  //         padding: const EdgeInsets.all(20),
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Container(
+  //               width: 40,
+  //               height: 4,
+  //               decoration: BoxDecoration(
+  //                 color: Colors.grey[300],
+  //                 borderRadius: BorderRadius.circular(2),
+  //               ),
+  //             ),
+  //             const SizedBox(height: 20),
+  //             ListTile(
+  //               leading: CircleAvatar(
+  //                 backgroundColor: primaryColor.withOpacity(0.1),
+  //                 child: Icon(Icons.visibility, color: primaryColor),
+  //               ),
+  //               title: const Text('View Report'),
+  //               subtitle: const Text('Open and read the report'),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 _openPDF(filePath, fileName);
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: CircleAvatar(
+  //                 backgroundColor: Colors.blue.withOpacity(0.1),
+  //                 child: const Icon(Icons.download, color: Colors.blue),
+  //               ),
+  //               title: const Text('Download Report'),
+  //               subtitle: const Text('Save to device'),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 _downloadReport(pdfUrl, fileName);
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     Navigator.pop(context);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text("Error opening report: $e"),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
+
+void _openReport(Map<String, dynamic> report) async {
+  final patDiagId = report['pat_diag_id'];
+  final patVisitId = report['pat_visit_id'];
+  
+  String reportName = '';
+  String rptId = '';
+  String parameters = '';
+  
+  if (patVisitId != null) {
+    parameters = patVisitId.toString();
+    reportName = 'Prescrpt';
+    rptId = '19';
+  } else if (patDiagId != null) {
+    parameters = patDiagId.toString();
+    
+    final testType = report['testtype']?.toString().toUpperCase() ?? '';
+    final modality = report['modality']?.toString().toUpperCase() ?? '';
+
+    if (testType == 'LABORATORY' || modality.contains('LAB')) {
+      reportName = 'Labrpt';
+      rptId = '19';
+    } else if (testType == 'GASTRO' || modality.contains('GASTRO')) {
+      reportName = 'GastRpt';
+      rptId = '64';
+    } else if (testType == 'RADIOLOGY' || modality.contains('RADIOLOGY')) {
+      reportName = 'RadRpt';
+      rptId = '22';
+    } else {
+      reportName = 'Prescrpt';
+      rptId = '19';
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Cannot open report: No valid ID found")),
+    );
+    return;
+  }
+
+  final pdfUrl =
+      'http://172.16.40.10:8080/api/PatientReport/GenerateReport'
+      '?rptId=$rptId'
+      '&reportName=$reportName'
+      '&parameters=$parameters'
+      '&user=MobileApp';
+
+  // Show loading dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Animated circular progress with container
+              Container(
+                width: 60,
+                height: 60,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: primaryColor.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const CircularProgressIndicator(
+                  color: Color(0xFF1FC9C0),
+                  strokeWidth: 3,
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Report name
+              Text(
+                report['name'] ?? 'Report',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF2E3B4E),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              // Loading text with animated dots
+              const Text(
+                'Generating your report',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                'Please wait...',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+
+  try {
+    final dir = await getApplicationDocumentsDirectory();
+    final fileName = '${reportName}_$parameters.pdf';
+    final filePath = '${dir.path}/$fileName';
+
+    final dio = Dio();
+    dio.options.connectTimeout = const Duration(seconds: 30);
+    dio.options.receiveTimeout = const Duration(seconds: 30);
+
+    final response = await dio.get(
+      pdfUrl,
+      options: Options(responseType: ResponseType.bytes),
+    );
+
+    final contentType = response.headers.value("content-type");
+
+    if (contentType == null || !contentType.contains("application/pdf")) {
+      Navigator.pop(context); // Close loading dialog
+      throw Exception("Server did not return a valid PDF");
+    }
+
+    final file = File(filePath);
+    await file.writeAsBytes(response.data, flush: true);
+
+    Navigator.pop(context); // Close loading dialog
+
+    // Show options dialog
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      enableDrag: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Drag handle
+              Container(
+                margin: const EdgeInsets.only(top: 12),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              
+              // Report info
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: primaryColor.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.description_outlined,
+                        color: primaryColor,
+                        size: 28,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      report['name'] ?? 'Report',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2E3B4E),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _formatDateFromAPI(report['date'] ?? ''),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 20),
+              
+              // Divider
+              Divider(
+                color: Colors.grey[200],
+                thickness: 1,
+                height: 1,
+              ),
+              
+              // Options
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.visibility,
+                    color: primaryColor,
+                    size: 22,
+                  ),
+                ),
+                title: const Text(
+                  'View Report',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
+                subtitle: Text(
+                  'Open and read the report',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Colors.grey,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _openPDF(filePath, fileName);
+                },
+              ),
+              
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.download,
+                    color: Colors.blue,
+                    size: 22,
+                  ),
+                ),
+                title: const Text(
+                  'Save to Downloads',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
+                subtitle: Text(
+                  'Save report to your device',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Colors.grey,
+                ),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _downloadReport(pdfUrl, fileName, report['name'] ?? 'Report');
+                },
+              ),
+              
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  } catch (e) {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context); // Close loading dialog
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.error_outline, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(child: Text("Error generating report: ${e.toString()}")),
+          ],
+        ),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Medical Reports',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    'MR: ${widget.patientMrNo}',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    widget.patientName,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.white,
+          indicatorWeight: 3,
+          indicatorSize: TabBarIndicatorSize.tab,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 12,
+          ),
+          isScrollable: true,
+          tabs: const [
+            Tab(text: 'Laboratory'),
+            Tab(text: 'Gastro'),
+            Tab(text: 'Radiology'),
+            Tab(text: 'Prescription'),
+          ],
+        ),
+      ),
+      body: isLoading
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: primaryColor,
+                    strokeWidth: 3,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Loading reports...',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : errorMessage != null
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 48,
+                        color: Colors.red[300],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        errorMessage!,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: fetchAllReports,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                )
+              : TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildReportsGrid(laboratoryReports),
+                    _buildReportsGrid(gastroReports),
+                    _buildReportsGrid(radiologyReports),
+                    _buildReportsGrid(prescriptionReports),
+                  ],
+                ),
+    );
+  }
+
+  Widget _buildReportsGrid(List<Map<String, dynamic>> reports) {
+    if (reports.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.folder_open_outlined,
+                size: 48,
+                color: Colors.grey[400],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'No reports available',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Check back later for updates',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.grey[500],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 1.1,
+        ),
+        itemCount: reports.length,
+        itemBuilder: (context, index) {
+          final report = reports[index];
+          String formattedDate = _formatDateFromAPI(report['date'] ?? '');
+          bool isPrescription = report['type'] == 'Prescription';
+          
+          return GestureDetector(
+            onTap: () => _openReport(report),
+            child: Container(
+              decoration: BoxDecoration(
+                color: cardBackgroundColor,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.08),
+                    spreadRadius: 2,
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Stack(
+                  children: [
+                    // Gradient overlay at top
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              primaryColor.withOpacity(0.05),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Header with icon and date
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: primaryColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                child: Icon(
+                                  report['icon'] ?? Icons.description_outlined,
+                                  color: primaryColor,
+                                  size: 18,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[50],
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: Colors.grey[200]!,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    formattedDate,
+                                    style: TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[700],
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          
+                          const SizedBox(height: 10),
+                          
+                          // Report name/type
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: primaryColor.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              report['name'] ?? '',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 11,
+                                color: Color(0xFF2E3B4E),
+                                letterSpacing: 0.3,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 8),
+                          
+                          // Doctor name (for prescriptions) or modality
+                          if (isPrescription && report['doctor'] != null) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.blue.withOpacity(0.1),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.person_outline,
+                                    size: 12,
+                                    color: Colors.blue[700],
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: Text(
+                                      report['doctor'],
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.blue[800],
+                                        letterSpacing: 0.2,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ] else if (report['modality'] != null && report['modality'].isNotEmpty) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                report['modality'],
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.orange[800],
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                          
+                          const SizedBox(height: 8),
+                          
+                          // Department badge (for prescriptions)
+                          if (isPrescription && report['department'] != null) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.purple.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.business_outlined,
+                                    size: 10,
+                                    color: Colors.purple[600],
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Flexible(
+                                    child: Text(
+                                      report['department'],
+                                      style: TextStyle(
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.purple[700],
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    
+                    // Subtle border accent
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Container(
+                        width: 4,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(4),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
