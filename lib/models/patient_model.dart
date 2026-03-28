@@ -10,6 +10,7 @@ class PatientVisit {
   final String cnic;
   final String contactNo;
   final String bloodGroup;
+  final String email;
 
   PatientVisit({
     required this.serialNumber,
@@ -21,6 +22,8 @@ class PatientVisit {
     required this.cnic,
     required this.contactNo,
     required this.bloodGroup,
+        required this.email,
+
   });
 
   factory PatientVisit.fromJson(Map<String, dynamic> json) {
@@ -34,6 +37,8 @@ class PatientVisit {
       cnic: json['cnic'] ?? '',
       contactNo: json['contactNo'] ?? '',
       bloodGroup: json['bloodGroup'] ?? '',
+      email: json['emailAddress'] ?? '',
+
     );
   }
 
@@ -48,6 +53,8 @@ class PatientVisit {
       'cnic': cnic,
       'contactNo': contactNo,
       'bloodGroup': bloodGroup,
+      'emailAddress': email,
+
     };
   }
 }
@@ -60,6 +67,7 @@ class PatientInfo {
   final String cnic;
   final String contactNo;
   final String bloodGroup;
+  final String email;
 
   PatientInfo({
     required this.firstName,
@@ -69,6 +77,8 @@ class PatientInfo {
     required this.cnic,
     required this.contactNo,
     required this.bloodGroup,
+    required this.email,
+
   });
 
   factory PatientInfo.fromPatientVisit(PatientVisit visit) {
@@ -80,6 +90,7 @@ class PatientInfo {
       cnic: visit.cnic,
       contactNo: visit.contactNo,
       bloodGroup: visit.bloodGroup,
+      email: visit.email,
     );
   }
 }

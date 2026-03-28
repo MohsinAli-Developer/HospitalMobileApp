@@ -5,6 +5,7 @@ class DoctorSchedule {
   final String dayName;
   final DateTime timeFrom;
   final DateTime timeTo;
+  final int weekId;
 
   DoctorSchedule({
     required this.serialNumber,
@@ -13,6 +14,7 @@ class DoctorSchedule {
     required this.dayName,
     required this.timeFrom,
     required this.timeTo,
+    required this.weekId,
   });
 
   factory DoctorSchedule.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,8 @@ class DoctorSchedule {
       dayName: json['dayName'],
       timeFrom: DateTime.parse(json['timeFrom']),
       timeTo: DateTime.parse(json['timeTo']),
+      weekId: json['week_ID'],
+
     );
   }
 }

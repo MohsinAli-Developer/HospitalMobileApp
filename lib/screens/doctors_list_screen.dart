@@ -6,11 +6,14 @@ import 'doctor_schedule_screen.dart';
 class DoctorsListScreen extends StatefulWidget {
   final String patientMrNo;
   final String patientName;
+  final bool isLoggedIn; // Add this parameter
 
   const DoctorsListScreen({
     super.key,
     required this.patientMrNo,
     required this.patientName,
+        this.isLoggedIn = false, // Default to false
+
   });
 
   @override
@@ -34,6 +37,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
       setState(() {
         doctors = data;
         isLoading = false;
+
       });
     } catch (e) {
       print("Doctor Load Error: $e");
@@ -57,6 +61,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
         title: const Text(
           'Find a Doctor',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          
         ),
         centerTitle: true,
       ),
@@ -88,6 +93,11 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
             builder: (_) => DoctorScheduleScreen(
               doctorId: doctor.id,
               doctorName: doctor.doctorName,
+              patientMrNo:  widget.patientMrNo,
+              patientName: widget.patientName,
+              departmentId: doctor.departmentId,
+              isLoggedIn: widget.isLoggedIn,
+
             ),
           ),
         );
