@@ -129,7 +129,7 @@ Future<void> generateReport(PatientReport report) async {
       builder: (BuildContext context) {
         return Dialog(
           elevation: 0,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -168,7 +168,7 @@ Future<void> generateReport(PatientReport report) async {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF2E3B4E),
+                    color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -178,7 +178,7 @@ Future<void> generateReport(PatientReport report) async {
                   'Generating your report',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -265,38 +265,72 @@ Future<void> generateReport(PatientReport report) async {
   }
 }
 
-  void _openPDF(String filePath, String fileName) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: Text(
-              fileName,
-              style: const TextStyle(fontSize: 16),
+  // void _openPDF(String filePath, String fileName) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => Scaffold(
+  //         appBar: AppBar(
+  //           title: Text(
+  //             fileName,
+  //             style: const TextStyle(fontSize: 16, color: Colors.white),
+  //           ),
+  //           backgroundColor: primaryColor,
+  //           elevation: 0,
+  //           actions: [
+  //             IconButton(
+  //               icon: const Icon(Icons.share, color: Colors.white,),
+  //               onPressed: () {
+  //                 // Share functionality can be added here
+  //                 ScaffoldMessenger.of(context).showSnackBar(
+  //                   const SnackBar(content: Text('Share feature coming soon')),
+  //                 );
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //         body: SfPdfViewer.file(
+  //           File(filePath),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+void _openPDF(String filePath, String fileName) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            fileName,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.white, // Black text
             ),
-            backgroundColor: primaryColor,
-            elevation: 0,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.share),
-                onPressed: () {
-                  // Share functionality can be added here
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Share feature coming soon')),
-                  );
-                },
-              ),
-            ],
           ),
-          body: SfPdfViewer.file(
-            File(filePath),
+          backgroundColor: Colors.teal, // White background
+          elevation: 1, // Slight shadow for separation
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white), // Black back button
+            onPressed: () => Navigator.pop(context),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.share, color: Colors.white), // Black share button
+              onPressed: () {
+                _sharePDF(filePath, fileName);
+              },
+            ),
+          ],
+        ),
+        body: SfPdfViewer.file(
+          File(filePath),
         ),
       ),
-    );
-  }
-
+    ),
+  );
+}
 // Helper method to share PDF
 Future<void> _sharePDF(String filePath, String reportName) async {
   try {
@@ -385,7 +419,7 @@ Future<void> _sharePDF(String filePath, String reportName) async {
         backgroundColor: const Color(0xFF1FC9C0),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: Column(
@@ -414,10 +448,10 @@ Future<void> _sharePDF(String filePath, String reportName) async {
           indicatorColor: Colors.white,
           indicatorWeight: 3,
           labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          unselectedLabelColor: Colors.white,
           labelStyle: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            fontSize: 16,
           ),
           tabs: departments.map((dept) => Tab(text: dept['name'])).toList(),
         ),
@@ -474,14 +508,14 @@ Future<void> _sharePDF(String filePath, String reportName) async {
                                     fontSize: 14,
                                   ),
                                 ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  'Rpt ID: ${departments[_tabController.index]['rptId']}',
-                                  style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 12,
-                                  ),
-                                ),
+                                // const SizedBox(height: 2),
+                                // Text(
+                                //   'Rpt ID: ${departments[_tabController.index]['rptId']}',
+                                //   style: const TextStyle(
+                                //     color: Colors.white70,
+                                //     fontSize: 12,
+                                //   ),
+                              //  ),
                               ],
                             ),
                             Column(
@@ -706,7 +740,7 @@ Future<void> _sharePDF(String filePath, String reportName) async {
                                                   ),
                                                   child: IconButton(
                                                     icon: const Icon(
-                                                      Icons.download,
+                                                      Icons.remove_red_eye_outlined,
                                                       color: Color(0xFF1FC9C0),
                                                       size: 20,
                                                     ),
