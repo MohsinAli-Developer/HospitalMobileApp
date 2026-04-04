@@ -626,7 +626,6 @@ Future<void> _bookAppointment(
         phoneNo = _relativePhoneController.text.isNotEmpty 
             ? _relativePhoneController.text 
             : "0";
-        // For relative, we still use the patient's MR number
         mrNo = widget.patientMrNo ?? "";
         purpose = "Relative Appointment - ${_relativeRelationController.text.isNotEmpty ? _relativeRelationController.text : "Relative"} of ${widget.patientName}";
       }
