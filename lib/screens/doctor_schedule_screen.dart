@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:btih_andriod_app/models/local_appointment.dart';
+import 'package:btih_andriod_app/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/doctor_schedule_model.dart';
@@ -562,7 +564,6 @@ bool _validateRelativeFields() {
 }
   // In your BookingService class, add this method:
 
-
 Future<void> _bookAppointment(
   DoctorSchedule schedule, 
   BuildContext dialogContext, 
@@ -579,33 +580,89 @@ Future<void> _bookAppointment(
     String mrNo;
     String purpose;
     String email = "string"; // Default email
+    String appointmentId = "";
+    String doctorName = schedule.doctorName ?? "Doctor";
 
     if (!widget.isLoggedIn) {
-      // Guest booking
+      // Guest booking - Save to local storage
       patientNameForBooking = _guestNameController.text;
       phoneNo = _guestPhoneController.text.isNotEmpty ? _guestPhoneController.text : "0";
       mrNo = ""; // Empty MR No for guest
       purpose = "Guest Appointment";
-      email = "guest@example.com"; // You might want to add email field for guests
+      email = "guest@example.com";
+      
+       final response = await _bookingService.insertChallan(
+        name: patientNameForBooking,
+        phoneNo: phoneNo,
+        mrno: mrNo,
+        email: email,
+        weekId: schedule.weekId ?? 0,
+        appointmentTime: formattedScheduleForDb,
+        status: "Pending",
+        doctorId: widget.doctorId,
+        departmentId: widget.departmentId,
+        purpose: purpose,
+        isActive: true,
+      );
+
+      // Create a unique appointment ID for guest
+      appointmentId = "GUEST_${DateTime.now().millisecondsSinceEpoch}";
+      
+      // Create local appointment object
+      final localAppointment = LocalAppointment(
+        appointmentId: appointmentId,
+        name: patientNameForBooking,
+        phoneNo: phoneNo,
+        mrNo: mrNo,
+        email: email,
+        weekId: schedule.weekId ?? 0,
+        appointmentTime: formattedScheduleForDb,
+        status: "Pending",
+        doctorName: doctorName,
+        purpose: purpose,
+        createdAt: DateTime.now().toIso8601String(),
+        doctorId: widget.doctorId,
+        departmentId: widget.departmentId,
+        isGuestAppointment: true,
+      );
+      
+      // Save to local database
+      await DatabaseHelper().insertAppointment(localAppointment);
+      
+      Navigator.pop(dialogContext);
+      
+      // Show success message
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Appointment booked successfully!'),
+      //     backgroundColor: Colors.green,
+      //     duration: Duration(seconds: 2),
+      //   ),
+      // );
+      
+      // // Optional: Show a dialog with booking details
+      // _showGuestSuccessDialog(localAppointment);
+      if (response['message'] != null) {
+    _showGuestSuccessDialog(localAppointment);
+  } else {
+    _showErrorDialog('Failed to book appointment');
+  }
+      
     } else {
-      // Logged in user booking
+      // Logged in user booking - Save to server
       if (_isForSelf) {
-        
         try {
-          // Call the verification API to get MR number
           final verificationResponse = await verifyPhoneNumber(widget.patientMrNo);
           
           if (verificationResponse['contactno'] != null) {
             phoneNo = verificationResponse['contactno'];
-                      patientNameForBooking = widget.patientName;
-          mrNo = widget.patientMrNo ?? "";
-          purpose = "NILL";
-
+            patientNameForBooking = widget.patientName;
+            mrNo = widget.patientMrNo ?? "";
+            purpose = "NILL";
           } else {
             throw Exception('MR number not found in response');
           }
         } catch (e) {
-          // If verification fails, fall back to using provided data
           print("Phone verification failed: $e");
           patientNameForBooking = widget.patientName;
           phoneNo = "0";
@@ -621,7 +678,6 @@ Future<void> _bookAppointment(
           );
         }
       } else {
-        // Relative booking
         patientNameForBooking = _relativeNameController.text;
         phoneNo = _relativePhoneController.text.isNotEmpty 
             ? _relativePhoneController.text 
@@ -629,29 +685,29 @@ Future<void> _bookAppointment(
         mrNo = widget.patientMrNo ?? "";
         purpose = "Relative Appointment - ${_relativeRelationController.text.isNotEmpty ? _relativeRelationController.text : "Relative"} of ${widget.patientName}";
       }
-    }
 
-    // Insert the challan with the collected data
-    final response = await _bookingService.insertChallan(
-      name: patientNameForBooking,
-      phoneNo: phoneNo,
-      mrno: mrNo,
-      email: email,
-      weekId: schedule.weekId ?? 0,
-      appointmentTime: formattedScheduleForDb,
-      status: "Pending",
-      doctorId: widget.doctorId,
-      departmentId: widget.departmentId,
-      purpose: purpose,
-      isActive: true,
-    );
+      // Insert the challan with the collected data
+      final response = await _bookingService.insertChallan(
+        name: patientNameForBooking,
+        phoneNo: phoneNo,
+        mrno: mrNo,
+        email: email,
+        weekId: schedule.weekId ?? 0,
+        appointmentTime: formattedScheduleForDb,
+        status: "Pending",
+        doctorId: widget.doctorId,
+        departmentId: widget.departmentId,
+        purpose: purpose,
+        isActive: true,
+      );
 
-    Navigator.pop(dialogContext);
+      Navigator.pop(dialogContext);
 
-    if (response['message'] != null) {
-      _showSuccessDialog(response['message']);
-    } else {
-      _showErrorDialog('Failed to book appointment');
+      if (response['message'] != null) {
+        _showSuccessDialog(response['message']);
+      } else {
+        _showErrorDialog('Failed to book appointment');
+      }
     }
   } catch (e) {
     Navigator.pop(dialogContext);
@@ -662,6 +718,146 @@ Future<void> _bookAppointment(
     });
   }
 }
+
+// Add this helper method for guest success dialog
+void _showGuestSuccessDialog(LocalAppointment appointment) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Appointment Booked Successfully!'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Name: ${appointment.name}'),
+            const SizedBox(height: 8),
+            Text('Time: ${appointment.appointmentTime}'),
+            const SizedBox(height: 8),
+            Text('Doctor: ${appointment.doctorName}'),
+            const SizedBox(height: 8),
+            Text('Status: ${appointment.status}'),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.grey[200],
+              child: const Text(
+                'Note: Your appointment has been saved locally. Please login to sync with server.',
+                style: TextStyle(fontSize: 12, color: Colors.orange),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
+// Future<void> _bookAppointment(
+//   DoctorSchedule schedule, 
+//   BuildContext dialogContext, 
+//   StateSetter setDialogState,
+//   String formattedScheduleForDb,
+// ) async {
+//   setDialogState(() {
+//     _isBookingInProgress = true;
+//   });
+
+//   try {
+//     String patientNameForBooking;
+//     String phoneNo;
+//     String mrNo;
+//     String purpose;
+//     String email = "string"; // Default email
+
+//     if (!widget.isLoggedIn) {
+//       // Guest booking
+//       patientNameForBooking = _guestNameController.text;
+//       phoneNo = _guestPhoneController.text.isNotEmpty ? _guestPhoneController.text : "0";
+//       mrNo = ""; // Empty MR No for guest
+//       purpose = "Guest Appointment";
+//       email = "guest@example.com"; // You might want to add email field for guests
+//     } else {
+//       // Logged in user booking
+//       if (_isForSelf) {
+        
+//         try {
+//           // Call the verification API to get MR number
+//           final verificationResponse = await verifyPhoneNumber(widget.patientMrNo);
+          
+//           if (verificationResponse['contactno'] != null) {
+//             phoneNo = verificationResponse['contactno'];
+//                       patientNameForBooking = widget.patientName;
+//           mrNo = widget.patientMrNo ?? "";
+//           purpose = "NILL";
+
+//           } else {
+//             throw Exception('MR number not found in response');
+//           }
+//         } catch (e) {
+//           // If verification fails, fall back to using provided data
+//           print("Phone verification failed: $e");
+//           patientNameForBooking = widget.patientName;
+//           phoneNo = "0";
+//           mrNo = widget.patientMrNo ?? "";
+//           purpose = "NILL";
+          
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(
+//               content: Text('Could not verify phone. Using existing data.'),
+//               backgroundColor: Colors.orange,
+//               duration: const Duration(seconds: 2),
+//             ),
+//           );
+//         }
+//       } else {
+//         // Relative booking
+//         patientNameForBooking = _relativeNameController.text;
+//         phoneNo = _relativePhoneController.text.isNotEmpty 
+//             ? _relativePhoneController.text 
+//             : "0";
+//         mrNo = widget.patientMrNo ?? "";
+//         purpose = "Relative Appointment - ${_relativeRelationController.text.isNotEmpty ? _relativeRelationController.text : "Relative"} of ${widget.patientName}";
+//       }
+//     }
+
+//     // Insert the challan with the collected data
+//     final response = await _bookingService.insertChallan(
+//       name: patientNameForBooking,
+//       phoneNo: phoneNo,
+//       mrno: mrNo,
+//       email: email,
+//       weekId: schedule.weekId ?? 0,
+//       appointmentTime: formattedScheduleForDb,
+//       status: "Pending",
+//       doctorId: widget.doctorId,
+//       departmentId: widget.departmentId,
+//       purpose: purpose,
+//       isActive: true,
+//     );
+
+//     Navigator.pop(dialogContext);
+
+//     if (response['message'] != null) {
+//       _showSuccessDialog(response['message']);
+//     } else {
+//       _showErrorDialog('Failed to book appointment');
+//     }
+//   } catch (e) {
+//     Navigator.pop(dialogContext);
+//     _showErrorDialog('Error booking appointment: ${e.toString()}');
+//   } finally {
+//     setState(() {
+//       _isBookingInProgress = false;
+//     });
+//   }
+// }
+
 Future<Map<String, dynamic>> verifyPhoneNumber(String mrno) async {
   try {
     final response = await http.post(
@@ -888,7 +1084,7 @@ Future<Map<String, dynamic>> verifyPhoneNumber(String mrno) async {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          widget.doctorName,
+          "Book Appointment",
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
