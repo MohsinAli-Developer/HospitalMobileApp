@@ -7,7 +7,6 @@ import '../models/doctor_schedule_model.dart';
 import '../models/doctors_model.dart';
 import '../services/doctors_service.dart';
 import '../services/booking_service.dart';
-import 'login_screen.dart'; // Add this import
 
 class DoctorScheduleScreen extends StatefulWidget {
   final int doctorId;
@@ -43,7 +42,7 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
   bool isLoading = true;
   DoctorSchedule? selectedSchedule;
   late bool _isForSelf;
-bool _guestDetailsEntered = false;
+  bool _guestDetailsEntered = false;
 
   // Controllers for guest/relative details
   final TextEditingController _guestNameController = TextEditingController();
@@ -1074,306 +1073,341 @@ Future<Map<String, dynamic>> verifyPhoneNumber(String mrno) async {
         return Icons.calendar_today;
     }
   }
+@override
+Widget build(BuildContext context) {
+  final doctor = doctors.isNotEmpty ? doctors.first : null;
+  final groupedSchedules = groupSchedulesByDay();
 
-  @override
-  Widget build(BuildContext context) {
-    final doctor = doctors.isNotEmpty ? doctors.first : null;
-    final groupedSchedules = groupSchedulesByDay();
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          "Book Appointment",
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+  return Scaffold(
+    backgroundColor: Colors.white,
+    appBar: AppBar(
+      title: Text(
+        "Book Appointment",
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),
-        backgroundColor: const Color(0xFF1FC9C0),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        // Show booking type bar only when logged in
-        bottom: widget.isLoggedIn
-            ? PreferredSize(
-                preferredSize: const Size.fromHeight(40),
-                child: GestureDetector(
-                  onTap: _showBookingTypeDialog,
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          _isForSelf ? Icons.person : Icons.group,
-                          color: Colors.white,
-                          size: 16,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Booking for: ${_isForSelf ? "Yourself" : "Relative"}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            : null,
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1FC9C0)),
-              ),
-            )
-          : doctor == null
-              ? const Center(child: Text("Doctor details not found"))
-              : SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: const Color(0xFF1FC9C0),
+      elevation: 0,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+        onPressed: () => Navigator.pop(context),
+      ),
+      // Show booking type bar only when logged in
+      bottom: widget.isLoggedIn
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(40),
+              child: GestureDetector(
+                onTap: _showBookingTypeDialog,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Doctor Profile Card (same as before)
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1FC9C0),
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF1FC9C0).withOpacity(0.3),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
-                            ),
-                          ],
-                        ),
-                        child: SafeArea(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 120,
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 15,
-                                        offset: const Offset(0, 5),
-                                      ),
-                                    ],
-                                  ),
-                                  child: ClipOval(
-                                    child: doctor.doctorImagePath != null && 
-                                           doctor.doctorImagePath!.isNotEmpty
-                                        ? Image.network(
-                                            doctor.doctorImagePath!,
-                                            fit: BoxFit.cover,
-                                            loadingBuilder: (context, child, loadingProgress) {
-                                              if (loadingProgress == null) return child;
-                                              return Container(
-                                                color: Colors.white,
-                                                child: const Center(
-                                                  child: CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                                      Color(0xFF1FC9C0),
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            errorBuilder: (context, error, stackTrace) {
-                                              return Container(
-                                                color: Colors.white,
-                                                child: const Icon(
-                                                  Icons.person,
-                                                  size: 60,
-                                                  color: Color(0xFF1FC9C0),
-                                                ),
-                                              );
-                                            },
-                                          )
-                                        : Container(
-                                            color: Colors.white,
-                                            child: const Icon(
-                                              Icons.person,
-                                              size: 60,
-                                              color: Color(0xFF1FC9C0),
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  doctor.doctorName,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Text(
-                                    doctor.specializationName ?? 'General Doctor',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                if (doctor.doctorDescription != null && 
-                                    doctor.doctorDescription!.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 8),
-                                    child: Text(
-                                      doctor.doctorDescription!,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: Colors.white70,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
+                      Icon(
+                        _isForSelf ? Icons.person : Icons.group,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Booking for: ${_isForSelf ? "Yourself" : "Relative"}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      
-                      // Schedule Header
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF1FC9C0).withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Icon(
-                                Icons.calendar_month,
-                                color: Color(0xFF1FC9C0),
-                                size: 24,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Weekly Schedule',
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
+                      const SizedBox(width: 8),
+                      const Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 14,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : null,
+    ),
+    body: isLoading
+        ? const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1FC9C0)),
+            ),
+          )
+        : doctor == null
+            ? const Center(child: Text("Doctor details not found"))
+            : SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Doctor Profile Card
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1FC9C0),
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF1FC9C0).withOpacity(0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 5),
                                     ),
-                                  ),
-                                  Text(
-                                    widget.isLoggedIn 
-                                        ? 'Tap on a time slot to book'
-                                        : 'Book as guest - Tap to continue',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                                child: ClipOval(
+                                  child: doctor.doctorImagePath != null && 
+                                         doctor.doctorImagePath!.isNotEmpty
+                                      ? Image.network(
+                                          doctor.doctorImagePath!,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return Container(
+                                              color: Colors.white,
+                                              child: const Center(
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                                    Color(0xFF1FC9C0),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Container(
+                                              color: Colors.white,
+                                              child: const Icon(
+                                                Icons.person,
+                                                size: 60,
+                                                color: Color(0xFF1FC9C0),
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      : Container(
+                                          color: Colors.white,
+                                          child: const Icon(
+                                            Icons.person,
+                                            size: 60,
+                                            color: Color(0xFF1FC9C0),
+                                          ),
+                                        ),
+                                ),
                               ),
-                            ),
-                            // Guest indicator
-                            if (!widget.isLoggedIn)
+                              const SizedBox(height: 16),
+                              Text(
+                                doctor.doctorName,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
+                                  horizontal: 20,
+                                  vertical: 8,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(30),
                                 ),
-                                child: const Row(
-                                  children: [
-                                    Icon(
-                                      Icons.person_outline,
-                                      color: Colors.orange,
-                                      size: 16,
+                                child: Text(
+                                  doctor.specializationName ?? 'General Doctor',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              if (doctor.doctorDescription != null && 
+                                  doctor.doctorDescription!.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  child: Text(
+                                    doctor.doctorDescription!,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 14,
                                     ),
-                                    SizedBox(width: 4),
+                                  ),
+                                ),
+                              // Add OPD Charges after description
+                              const SizedBox(height: 12),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(width: 6),
                                     Text(
-                                      'Guest',
-                                      style: TextStyle(
-                                        color: Colors.orange,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
+                                      'OPD Charges: ${_getOPDChargesFromSchedules(groupedSchedules)}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                      
-                      // Schedule Cards
-                      groupedSchedules.isEmpty
-                          ? _buildEmptyState()
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              itemCount: groupedSchedules.length,
-                              itemBuilder: (context, index) {
-                                final day = groupedSchedules.keys.elementAt(index);
-                                final daySchedules = groupedSchedules[day]!;
-                                
-                                return _buildDayScheduleCard(day, daySchedules);
-                              },
+                    ),
+                    
+                    // Schedule Header
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1FC9C0).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                      
-                      SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
-                    ],
-                  ),
+                            child: const Icon(
+                              Icons.calendar_month,
+                              color: Color(0xFF1FC9C0),
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Weekly Schedule',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  widget.isLoggedIn 
+                                      ? 'Tap on a time slot to book'
+                                      : 'Book as guest - Tap to continue',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Guest indicator
+                          if (!widget.isLoggedIn)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Icon(
+                                    Icons.person_outline,
+                                    color: Colors.orange,
+                                    size: 16,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    'Guest',
+                                    style: TextStyle(
+                                      color: Colors.orange,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    
+                    // Schedule Cards
+                    groupedSchedules.isEmpty
+                        ? _buildEmptyState()
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            itemCount: groupedSchedules.length,
+                            itemBuilder: (context, index) {
+                              final day = groupedSchedules.keys.elementAt(index);
+                              final daySchedules = groupedSchedules[day]!;
+                              
+                              return _buildDayScheduleCard(day, daySchedules);
+                            },
+                          ),
+                    
+                    SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
+                  ],
                 ),
-    );
-  }
+              ),
+  );
+}
 
+// Helper method to get OPD charges from schedules
+String _getOPDChargesFromSchedules(Map<String, List<DoctorSchedule>> groupedSchedules) {
+  for (var schedules in groupedSchedules.values) {
+    if (schedules.isNotEmpty && schedules.first.opD_Charges > 0) {
+      return schedules.first.opD_Charges.toString();
+    }
+  }
+  return "N/A";
+}
   Widget _buildEmptyState() {
     return Padding(
       padding: const EdgeInsets.all(40),
@@ -1457,6 +1491,7 @@ Future<Map<String, dynamic>> verifyPhoneNumber(String mrno) async {
                 const Spacer(),
                 Text(
                   '${daySchedules.length} slot${daySchedules.length > 1 ? 's' : ''}',
+              
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[600],

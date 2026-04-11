@@ -11,6 +11,7 @@ class PatientVisit {
   final String contactNo;
   final String bloodGroup;
   final String email;
+  final String doctorName;
 
   PatientVisit({
     required this.serialNumber,
@@ -22,7 +23,8 @@ class PatientVisit {
     required this.cnic,
     required this.contactNo,
     required this.bloodGroup,
-        required this.email,
+    required this.email,
+    required this.doctorName,
 
   });
 
@@ -38,6 +40,7 @@ class PatientVisit {
       contactNo: json['contactNo'] ?? '',
       bloodGroup: json['bloodGroup'] ?? '',
       email: json['emailAddress'] ?? '',
+      doctorName: json['doctorName'] ?? '',
 
     );
   }
@@ -54,6 +57,7 @@ class PatientVisit {
       'contactNo': contactNo,
       'bloodGroup': bloodGroup,
       'emailAddress': email,
+      'doctorName': doctorName,
 
     };
   }

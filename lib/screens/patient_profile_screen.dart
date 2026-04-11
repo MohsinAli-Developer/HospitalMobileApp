@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/patient_model.dart';
-import '../utils/date_formatter.dart';
 import '../utils/ip_file.dart';
 
 class PatientProfilePage extends StatefulWidget {
@@ -582,6 +581,14 @@ class _PatientProfilePageState extends State<PatientProfilePage> {
                   const SizedBox(width: 6),
                   Text(
                     visit.contactNo.isNotEmpty ? visit.contactNo : 'No contact',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    visit.doctorName,
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],
