@@ -31,3 +31,48 @@ class Doctor {
     );
   }
 }
+
+
+// doctors_model.dart - Add this new class for paginated response
+
+class DoctorResponse {
+  final List<Doctor> data;
+  final Pagination pagination;
+
+  DoctorResponse({
+    required this.data,
+    required this.pagination,
+  });
+
+  factory DoctorResponse.fromJson(Map<String, dynamic> json) {
+    return DoctorResponse(
+      data: (json['data'] as List)
+          .map((e) => Doctor.fromJson(e))
+          .toList(),
+      pagination: Pagination.fromJson(json['pagination']),
+    );
+  }
+}
+
+class Pagination {
+  final int pageNumber;
+  final int pageSize;
+  final int totalRecords;
+  final int totalPages;
+
+  Pagination({
+    required this.pageNumber,
+    required this.pageSize,
+    required this.totalRecords,
+    required this.totalPages,
+  });
+
+  factory Pagination.fromJson(Map<String, dynamic> json) {
+    return Pagination(
+      pageNumber: json['pageNumber'],
+      pageSize: json['pageSize'],
+      totalRecords: json['totalRecords'],
+      totalPages: json['totalPages'],
+    );
+  }
+}

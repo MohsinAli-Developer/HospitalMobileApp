@@ -67,25 +67,67 @@ void dispose() {
   _relativePhoneController.dispose();
   super.dispose();
 }
-
-  void loadData() async {
+void loadData() async {
+  try {
+    final scheduleData = await _doctorService.getDoctorSchedule(widget.doctorId);
+    
+    // Instead of fetching all doctors, create a basic doctor object from passed data
+    final currentDoctor = Doctor(
+      serialNumber: 0,
+      id: widget.doctorId,
+      doctorName: widget.doctorName,
+      departmentId: widget.departmentId,
+      doctorDescription: "", // You might not have this
+      specializationName: "", // You might not have this
+      doctorImagePath: null,
+    );
+    
+    // Try to get full doctor details if possible, but use basic one as fallback
     try {
-      final scheduleData = await _doctorService.getDoctorSchedule(widget.doctorId);
-      final doctorsData = await _doctorService.getDoctors();
-      final currentDoctor = doctorsData.where((d) => d.id == widget.doctorId).toList();
-
+      final doctorsData = await _doctorService.getDoctorsPaginated(pageNumber: 1, pageSize: 100);
+      final foundDoctor = doctorsData.data.firstWhere(
+        (d) => d.id == widget.doctorId,
+        orElse: () => currentDoctor,
+      );
+      
       setState(() {
         schedules = scheduleData;
-        doctors = currentDoctor;
+        doctors = [foundDoctor];
         isLoading = false;
       });
     } catch (e) {
-      print("Data Load Error: $e");
+      // Fallback to basic doctor info
       setState(() {
+        schedules = scheduleData;
+        doctors = [currentDoctor];
         isLoading = false;
       });
     }
+  } catch (e) {
+    print("Data Load Error: $e");
+    setState(() {
+      isLoading = false;
+    });
   }
+}
+  // void loadData() async {
+  //   try {
+  //     final scheduleData = await _doctorService.getDoctorSchedule(widget.doctorId);
+  //     final doctorsData = await _doctorService.getDoctors();
+  //     final currentDoctor = doctorsData.where((d) => d.id == widget.doctorId).toList();
+
+  //     setState(() {
+  //       schedules = scheduleData;
+  //       doctors = currentDoctor;
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print("Data Load Error: $e");
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   // Modified: Show booking type dialog only when logged in
   void _showBookingTypeDialog() {
@@ -757,105 +799,7 @@ void _showGuestSuccessDialog(LocalAppointment appointment) {
     },
   );
 }
-// Future<void> _bookAppointment(
-//   DoctorSchedule schedule, 
-//   BuildContext dialogContext, 
-//   StateSetter setDialogState,
-//   String formattedScheduleForDb,
-// ) async {
-//   setDialogState(() {
-//     _isBookingInProgress = true;
-//   });
 
-//   try {
-//     String patientNameForBooking;
-//     String phoneNo;
-//     String mrNo;
-//     String purpose;
-//     String email = "string"; // Default email
-
-//     if (!widget.isLoggedIn) {
-//       // Guest booking
-//       patientNameForBooking = _guestNameController.text;
-//       phoneNo = _guestPhoneController.text.isNotEmpty ? _guestPhoneController.text : "0";
-//       mrNo = ""; // Empty MR No for guest
-//       purpose = "Guest Appointment";
-//       email = "guest@example.com"; // You might want to add email field for guests
-//     } else {
-//       // Logged in user booking
-//       if (_isForSelf) {
-        
-//         try {
-//           // Call the verification API to get MR number
-//           final verificationResponse = await verifyPhoneNumber(widget.patientMrNo);
-          
-//           if (verificationResponse['contactno'] != null) {
-//             phoneNo = verificationResponse['contactno'];
-//                       patientNameForBooking = widget.patientName;
-//           mrNo = widget.patientMrNo ?? "";
-//           purpose = "NILL";
-
-//           } else {
-//             throw Exception('MR number not found in response');
-//           }
-//         } catch (e) {
-//           // If verification fails, fall back to using provided data
-//           print("Phone verification failed: $e");
-//           patientNameForBooking = widget.patientName;
-//           phoneNo = "0";
-//           mrNo = widget.patientMrNo ?? "";
-//           purpose = "NILL";
-          
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             SnackBar(
-//               content: Text('Could not verify phone. Using existing data.'),
-//               backgroundColor: Colors.orange,
-//               duration: const Duration(seconds: 2),
-//             ),
-//           );
-//         }
-//       } else {
-//         // Relative booking
-//         patientNameForBooking = _relativeNameController.text;
-//         phoneNo = _relativePhoneController.text.isNotEmpty 
-//             ? _relativePhoneController.text 
-//             : "0";
-//         mrNo = widget.patientMrNo ?? "";
-//         purpose = "Relative Appointment - ${_relativeRelationController.text.isNotEmpty ? _relativeRelationController.text : "Relative"} of ${widget.patientName}";
-//       }
-//     }
-
-//     // Insert the challan with the collected data
-//     final response = await _bookingService.insertChallan(
-//       name: patientNameForBooking,
-//       phoneNo: phoneNo,
-//       mrno: mrNo,
-//       email: email,
-//       weekId: schedule.weekId ?? 0,
-//       appointmentTime: formattedScheduleForDb,
-//       status: "Pending",
-//       doctorId: widget.doctorId,
-//       departmentId: widget.departmentId,
-//       purpose: purpose,
-//       isActive: true,
-//     );
-
-//     Navigator.pop(dialogContext);
-
-//     if (response['message'] != null) {
-//       _showSuccessDialog(response['message']);
-//     } else {
-//       _showErrorDialog('Failed to book appointment');
-//     }
-//   } catch (e) {
-//     Navigator.pop(dialogContext);
-//     _showErrorDialog('Error booking appointment: ${e.toString()}');
-//   } finally {
-//     setState(() {
-//       _isBookingInProgress = false;
-//     });
-//   }
-// }
 
 Future<Map<String, dynamic>> verifyPhoneNumber(String mrno) async {
   try {

@@ -1,4 +1,5 @@
 import 'package:btih_andriod_app/screens/AppointmentsInfoScreen.dart';
+import 'package:btih_andriod_app/screens/discharge_history_screen.dart';
 import 'package:btih_andriod_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:btih_andriod_app/screens/patient_profile_screen.dart';
@@ -379,7 +380,8 @@ Widget build(BuildContext context) {
                           'View All',
                           style: TextStyle(
                             color: Colors.white70,
-                            fontSize: 14,
+                            fontWeight: FontWeight.bold, // make bold
+                            fontSize: 16,
                           ),
                         ),
                         SizedBox(width: 8),
@@ -430,9 +432,9 @@ Widget build(BuildContext context) {
                             requiresLogin: true,
                           ),
                           _buildStatTile(
-                            Icons.message, 
-                            'Messages', 
-                            Colors.purple,
+                            Icons.report, 
+                            'Summary', 
+                            Colors.lightBlue,
                             requiresLogin: true,
                           ),
                         ],
@@ -456,7 +458,7 @@ Widget build(BuildContext context) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(Icons.home_outlined, 'Home', 0),
+             // _buildNavItem(Icons.home_outlined, 'Home', 0),
               _buildNavItem(Icons.dashboard_outlined, 'Dashboard', 1),
               _buildNavItem(Icons.person_outline, 'Profile', 2),
             ],
@@ -828,7 +830,7 @@ Widget _buildLoggedInContent() {
               ),
               _buildStatTile(
                 Icons.message, 
-                'Messages', 
+                'Summary', 
                 Colors.purple,
                 requiresLogin: true,
               ),
@@ -1015,10 +1017,10 @@ Widget _buildIconButton({
         
         if (index == 0) {
           // Home screen - always accessible
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const HomeScreen()),
+          //);
         } else if (index == 1) {
           // Already on Dashboard
         } else if (index == 2) {
@@ -1099,12 +1101,14 @@ Widget _buildIconButton({
               ),
             ),
           );
-        } else if (title == 'Messages') {
+        } else if (title == 'Summary') {
           // Navigate to messages screen (you'll need to create this)
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Messages feature coming soon'),
-              backgroundColor: Color(0xFF1FC9C0),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DischargeHistoryScreen(
+                patientMrNo: widget.patientMrNo,
+              ),
             ),
           );
         }
@@ -1143,7 +1147,8 @@ Widget _buildIconButton({
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold, // make bold
                         color: Colors.grey,
                       ),
                     ),
